@@ -1,0 +1,37 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Description of what the lane does"
+  lane :custom_lane do
+    # add actions here: https://docs.fastlane.tools/actions
+  end
+  desc "打包到pgy"
+  lane :toPgy do |options|
+  gym(
+    clean:true, #打包前clean项目
+    export_method: "development", #导出方式 可选的值有：app-store、ad-hoc、development、enterprise
+    scheme:"Runner", #scheme
+    configuration: "Release",#环境
+    #configuration: "Debug",#环境
+    output_directory:"./app",#ipa的存放目录
+    #output_name:get_build_number()#输出ipa的文件名为当前的build号
+    )
+  #蒲公英的配置 替换为自己的api_key和user_key
+  pgyer(api_key: "982c1db15da6f537091af87ea1a5b3d6",update_description: options[:desc])
+  end
+end
