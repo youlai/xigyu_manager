@@ -249,6 +249,27 @@ class _OrderPageSubState extends State<OrderPageSub> {
     });
   }
 
+  ///获取统计数量
+  getOperatePanelNum() {
+    RequestUtil.post(Api.getOperatePanelNum, {
+      'LoginId': loginId.value,
+      'GroupId': groupId.value,
+      'ServiceId': serviceId.value,
+      'FactoryId': factoryId.value,
+    }).then((value) {
+      if (value['Success']) {
+        Map data = value['rows'];
+        for (var element in orderNum) {
+          data.forEach((key, value) {
+            if (element['key'] == key) {
+              element['count'] = value;
+            }
+          });
+        }
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -261,6 +282,7 @@ class _OrderPageSubState extends State<OrderPageSub> {
           onRefresh: () {
             page = 1;
             refreshController.resetNoData();
+            getOperatePanelNum();
             getPageList();
           },
           onLoading: () {
@@ -427,9 +449,12 @@ class _OrderPageSubState extends State<OrderPageSub> {
         //   showToast('工单已被回收');
         //   return;
         // }
-        await pushTo(context, OrderDetailB(order['OrderNumber']));
-        page = 1;
-        getPageList();
+        var result = await pushTo(context, OrderDetailB(order['OrderNumber']));
+        if (result != null) {
+          refreshController.resetNoData();
+          getOperatePanelNum();
+          getPageList();
+        }
       },
       child: Stack(
         children: [

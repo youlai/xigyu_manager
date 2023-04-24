@@ -4,7 +4,7 @@
  * @Author: youlai 761364115@qq.com
  * @Date: 2023-04-03 10:20:05
  * @LastEditors: youlai 761364115@qq.com
- * @LastEditTime: 2023-04-23 14:22:29
+ * @LastEditTime: 2023-04-24 15:13:15
  * @FilePath: /xigyu_manager/lib/main.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -217,15 +217,7 @@ class _IndexPageState extends State<IndexPage> {
         onPageChanged: (index) {
           currentIndex.value = index;
         },
-        children: [
-          HomePage(),
-          isAdmin.value
-              ? FactoryManage(
-                  type: 1,
-                )
-              : OrderPage(),
-          HomePage()
-        ],
+        children: [HomePage(), OrderPage(), HomePage()],
       ),
       bottomNavigationBar: Obx(() => BottomNavigationBar(
             onTap: (index) {
@@ -241,7 +233,7 @@ class _IndexPageState extends State<IndexPage> {
               BottomNavigationBarItem(
                   icon: Icon(Icons.list),
                   activeIcon: Icon(Icons.list),
-                  label: isAdmin.value ? '工厂管理' : '全部工单'),
+                  label: '全部工单'),
               BottomNavigationBarItem(
                   icon: Icon(Icons.person),
                   activeIcon: Icon(Icons.person),
@@ -352,6 +344,12 @@ class _DrawerState extends State<Drawer> {
                                             } else {
                                               showToast(name);
                                             }
+                                            break;
+                                          case '所有工单':
+                                            pushTo(context, OrderPage());
+                                            break;
+                                          case '全部工单':
+                                            pushTo(context, OrderPage());
                                             break;
                                           default:
                                             showToast(name);

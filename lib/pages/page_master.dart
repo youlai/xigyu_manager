@@ -23,7 +23,8 @@ import "package:collection/collection.dart";
 
 class MasterPage extends StatefulWidget {
   var orderId;
-  MasterPage({this.orderId});
+  var orderNumber;
+  MasterPage({this.orderId,this.orderNumber});
   @override
   _MasterPageState createState() => _MasterPageState();
 }
@@ -56,7 +57,7 @@ class _MasterPageState extends State<MasterPage>
   void fetchData() {
     var params = {
       'LoginId': loginId.value,
-      'OrderNumber': widget.orderId,
+      'OrderNumber': widget.orderNumber,
       'UserId': search,
       'Rows': rows,
       'Page': page,
@@ -506,7 +507,7 @@ class _MasterPageState extends State<MasterPage>
     }).then((value) {
       if (value['Success']) {
         showToast('指派成功');
-        pop(context);
+        pop(context,true);
       } else {
         showToast(value['msg']);
       }

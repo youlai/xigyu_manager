@@ -602,10 +602,11 @@ class _OrderDetailBState extends State<OrderDetailB> {
                                   var result = await pushTo(
                                       context,
                                       MasterPage(
-                                        orderId: widget.orderNumber,
+                                        orderId: order['Model']['Id'],
+                                        orderNumber: widget.orderNumber,
                                       ));
                                   if (result != null) {
-                                    getDetail();
+                                    pop(context,true);
                                   }
                                 },
                                 child: Text('指派师傅',
@@ -1289,10 +1290,11 @@ class _OrderDetailBState extends State<OrderDetailB> {
                   var result = await pushTo(
                       context,
                       MasterPage(
-                        orderId: widget.orderNumber,
+                        orderId: order['Model']['Id'],
+                        orderNumber: widget.orderNumber,
                       ));
                   if (result != null) {
-                    getDetail();
+                    pop(context,true);
                   }
                 },
                 child: Text('指派师傅', style: TextStyle(fontSize: 16)),
@@ -1704,6 +1706,7 @@ class _OrderDetailBState extends State<OrderDetailB> {
       },
     );
   }
+
   ///复制工单信息
   void copyOrderInfo() {
     String copyText = "工单号：" +
