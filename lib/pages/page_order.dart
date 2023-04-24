@@ -625,14 +625,14 @@ class _OrderPageSubState extends State<OrderPageSub> {
               ],
             ),
           ),
-          if (order['IsMasterHead'] == 1)
-            Positioned(
-                left: 8,
-                child: Image.asset(
-                  'assets/zhiding.png',
-                  width: 30,
-                  height: 30,
-                ))
+          // if (order['IsMasterHead'] == 1)
+          //   Positioned(
+          //       left: 8,
+          //       child: Image.asset(
+          //         'assets/zhiding.png',
+          //         width: 30,
+          //         height: 30,
+          //       ))
         ],
       ),
     );

@@ -1,10 +1,10 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, sdk_version_ui_as_code
 
 /*
  * @Author: youlai 761364115@qq.com
  * @Date: 2023-04-03 10:20:05
  * @LastEditors: youlai 761364115@qq.com
- * @LastEditTime: 2023-04-23 10:27:46
+ * @LastEditTime: 2023-04-24 13:24:31
  * @FilePath: /xigyu_manager/lib/main.dart
  * @Description: 工单面板
  */
@@ -178,6 +178,7 @@ class _OrderPanelState extends State<OrderPanel>
         color: Colors.white,
         child: Column(
           children: [
+            if(isAdmin.value)
             Container(
               color: Colors.white,
               padding: EdgeInsets.all(8),
@@ -728,7 +729,7 @@ class _QuickOperationState extends State<QuickOperation> {
               mainAxisSpacing: 10,
               childAspectRatio: 2),
           scrollDirection: Axis.vertical,
-          itemCount: orderNum.length,
+          itemCount: orderNum.length-1,
           itemBuilder: (context, index) {
             return Container(
                 padding: EdgeInsets.all(10),
@@ -743,7 +744,7 @@ class _QuickOperationState extends State<QuickOperation> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            orderNum[index]['name'],
+                            orderNum[index+1]['name'],
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 18),
                           ),
@@ -753,7 +754,7 @@ class _QuickOperationState extends State<QuickOperation> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: Obx(() => Text(
-                                      '${orderNum[index]['count']}',
+                                      '${orderNum[index+1]['count']}',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(fontSize: 14),
                                     )),

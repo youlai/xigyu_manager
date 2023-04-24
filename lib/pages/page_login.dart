@@ -284,7 +284,7 @@ class LoginState extends State<Login> {
       if (value['Success']) {
         List roles = value['rows'];
         for (var element in roles) {
-          if (element['Name'] == '超级管理员') {
+          if (element['Name'] == '超级管理员' || element['Name'] == '公司财务') {
             isAdmin.value = true;
             box.write('isAdmin', isAdmin.value);
           }

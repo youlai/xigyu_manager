@@ -32,8 +32,9 @@ class _MasterPageState extends State<MasterPage>
     with AutomaticKeepAliveClientMixin {
   var page = 1;
   var rows = 10;
+
   ///1 同区域师傅 0跨区域师傅
-  RxInt selectType=1.obs;
+  RxInt selectType = 1.obs;
   String search = '';
   TextEditingController searchCtr = TextEditingController();
   RxList<Map> masterList = <Map>[].obs;
@@ -177,7 +178,7 @@ class _MasterPageState extends State<MasterPage>
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
                       selectType.value = 1;
-                      page=1;
+                      page = 1;
                       fetchData();
                     },
                     child: Obx(() => Container(
@@ -205,7 +206,7 @@ class _MasterPageState extends State<MasterPage>
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
                       selectType.value = 0;
-                      page=1;
+                      page = 1;
                       fetchData();
                     },
                     child: Obx(() => Container(
@@ -285,7 +286,9 @@ class _MasterPageState extends State<MasterPage>
                                       ? Colors.green
                                       : Colors.red),
                             ),
-                            SizedBox(width: 20,),
+                            SizedBox(
+                              width: 20,
+                            ),
                             Text(
                               master['StateName'] ?? '未认证',
                               style: TextStyle(
@@ -293,6 +296,20 @@ class _MasterPageState extends State<MasterPage>
                                   color: master['State'] == 2
                                       ? Colors.green
                                       : Colors.red),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: Text(
+                                '备注：${master['Remark'] ?? '--'}',
+                                style: TextStyle(fontSize: 14),
+                              ),
                             ),
                           ],
                         ),
@@ -411,7 +428,11 @@ class _MasterPageState extends State<MasterPage>
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
                     child: Center(
-                        child: Icon(Icons.phone_in_talk,size: 15,color: Colors.white,)),
+                        child: Icon(
+                      Icons.phone_in_talk,
+                      size: 15,
+                      color: Colors.white,
+                    )),
                   ),
                 ),
 
@@ -426,7 +447,7 @@ class _MasterPageState extends State<MasterPage>
                     clipBehavior: Clip.hardEdge,
                     margin: EdgeInsets.only(bottom: 10, right: 5),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black,width: 0.5),
+                      border: Border.all(color: Colors.black, width: 0.5),
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
                     child: Center(child: Text('派')),
