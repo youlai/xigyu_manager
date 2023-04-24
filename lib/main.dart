@@ -4,7 +4,7 @@
  * @Author: youlai 761364115@qq.com
  * @Date: 2023-04-03 10:20:05
  * @LastEditors: youlai 761364115@qq.com
- * @LastEditTime: 2023-04-11 17:38:42
+ * @LastEditTime: 2023-04-23 14:22:29
  * @FilePath: /xigyu_manager/lib/main.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -26,7 +26,9 @@ import 'package:xigyu_manager/global/global.dart';
 import 'package:xigyu_manager/pages/page_factory.dart';
 import 'package:xigyu_manager/pages/page_home.dart';
 import 'package:xigyu_manager/pages/page_login.dart';
+import 'package:xigyu_manager/pages/page_order.dart';
 import 'package:xigyu_manager/utils/request_util.dart';
+import 'package:xigyu_manager/utils/screen_utils.dart';
 import 'package:xigyu_manager/utils/utils.dart';
 import 'package:xigyu_manager/widgets/update_dialog.dart';
 
@@ -34,6 +36,7 @@ Future<void> main() async {
   await GetStorage.init();
   account.value = box.read('account') ?? {};
   loginId.value = box.read('loginId') ?? '';
+  isAdmin.value = box.read('isAdmin') ?? false;
   runApp(const MyApp());
 }
 
@@ -214,7 +217,15 @@ class _IndexPageState extends State<IndexPage> {
         onPageChanged: (index) {
           currentIndex.value = index;
         },
-        children: [HomePage(), FactoryManage(type: 1,), HomePage()],
+        children: [
+          HomePage(),
+          isAdmin.value
+              ? FactoryManage(
+                  type: 1,
+                )
+              : OrderPage(),
+          HomePage()
+        ],
       ),
       bottomNavigationBar: Obx(() => BottomNavigationBar(
             onTap: (index) {
@@ -230,7 +241,7 @@ class _IndexPageState extends State<IndexPage> {
               BottomNavigationBarItem(
                   icon: Icon(Icons.list),
                   activeIcon: Icon(Icons.list),
-                  label: '工厂管理'),
+                  label: isAdmin.value ? '工厂管理' : '全部工单'),
               BottomNavigationBarItem(
                   icon: Icon(Icons.person),
                   activeIcon: Icon(Icons.person),
@@ -257,6 +268,7 @@ class _DrawerState extends State<Drawer> {
   Widget build(BuildContext context) {
     return Container(
       color: Colors.white,
+      width: JhScreen.width / 3 * 2,
       child: SafeArea(
         child: Stack(
           children: [
@@ -335,7 +347,11 @@ class _DrawerState extends State<Drawer> {
 
                                         switch (name) {
                                           case '工厂管理':
-                                            pushTo(context, FactoryManage());
+                                            if (isAdmin.value) {
+                                              pushTo(context, FactoryManage());
+                                            } else {
+                                              showToast(name);
+                                            }
                                             break;
                                           default:
                                             showToast(name);
@@ -352,6 +368,10 @@ class _DrawerState extends State<Drawer> {
                 ElevatedButton(
                     onPressed: () {
                       box.erase();
+                      isAdmin.value = false;
+                      groupId.value = -1;
+                      serviceId.value = -1;
+                      factoryId.value = -1;
                       Navigator.pushReplacement(context,
                           MaterialPageRoute(builder: ((context) => Login())));
                     },

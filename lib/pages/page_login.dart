@@ -270,6 +270,25 @@ class LoginState extends State<Login> {
         loginId.value = value['rows']['UserId'];
         box.write('loginId', loginId.value);
         box.write('account', account.value);
+        getUserRoler();
+      } else {
+        showToast(value['msg']);
+      }
+    });
+  }
+
+  ///获取账号角色
+  void getUserRoler() {
+    RequestUtil.post(Api.getUserRoler, {'LoginId': loginId.value})
+        .then((value) {
+      if (value['Success']) {
+        List roles = value['rows'];
+        for (var element in roles) {
+          if (element['Name'] == '超级管理员') {
+            isAdmin.value = true;
+            box.write('isAdmin', isAdmin.value);
+          }
+        }
         Navigator.pushReplacement(context,
             CupertinoPageRoute(builder: (BuildContext context) {
           return IndexPage();

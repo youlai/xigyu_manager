@@ -4,7 +4,7 @@
  * @Author: youlai 761364115@qq.com
  * @Date: 2023-04-03 10:20:05
  * @LastEditors: youlai 761364115@qq.com
- * @LastEditTime: 2023-04-11 17:41:08
+ * @LastEditTime: 2023-04-23 10:27:46
  * @FilePath: /xigyu_manager/lib/main.dart
  * @Description: 工单面板
  */
@@ -63,8 +63,7 @@ class _OrderPanelState extends State<OrderPanel>
   void initState() {
     super.initState();
     tabCtr = TabController(length: 3, vsync: this);
-    getGroupList();
-    getServiceAccount();
+    getGroup();
     getFactoryList();
     getToday();
   }
@@ -118,6 +117,20 @@ class _OrderPanelState extends State<OrderPanel>
             }
           });
         }
+      }
+    });
+  }
+
+  ///获取所属操作组
+  getGroup() {
+    RequestUtil.post(Api.getGroup, {'LoginId': loginId.value}).then((value) {
+      if (value['Success']) {
+        if (value['rows'] != null) {
+          groupId.value = value['rows']['GroupId'];
+          serviceId.value = value['rows']['Id'];
+        }
+        getServiceAccount();
+        getGroupList();
       }
     });
   }
@@ -389,7 +402,7 @@ class _OrderPanelState extends State<OrderPanel>
                   firstDate: DateTime(2017, 9, 7, 17, 30),
                   lastDate: DateTime.now());
               if (timeRange == null) return;
-              selectTime.value=-1;
+              selectTime.value = -1;
               debugPrint(timeRange.toString());
               addStartTime.value =
                   DateFormat('yyyy-MM-dd').format(timeRange.start);
@@ -433,6 +446,8 @@ class _OrderPanelState extends State<OrderPanel>
           Expanded(
             child: Obx(
               () => GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.all(10),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     //设置列数
@@ -653,22 +668,6 @@ class QuickOperation extends StatefulWidget {
 }
 
 class _QuickOperationState extends State<QuickOperation> {
-  RxList orderNum = [
-    {'key': 'UnAssignNum', 'name': '未指派', 'count': 0}.obs,
-    {'key': 'UnTackNum', 'name': '未接单', 'count': 0}.obs,
-    {'key': 'AppoinNum', 'name': '未预约', 'count': 0}.obs,
-    {'key': 'DoorNum', 'name': '未上门', 'count': 0}.obs,
-    {'key': 'ServiceNum', 'name': '服务中', 'count': 0}.obs,
-    {'key': 'ThingNum', 'name': '待返件', 'count': 0}.obs,
-    {'key': 'AuditNum', 'name': '待核实', 'count': 0}.obs,
-    {'key': 'TagNum', 'name': '标记工单', 'count': 0}.obs,
-    {'key': 'CheckNum', 'name': '待审核', 'count': 0}.obs,
-    {'key': 'StayCompletedNum', 'name': '待完结', 'count': 0}.obs,
-    {'key': 'StayAbolishNum', 'name': '待废除', 'count': 0}.obs,
-    {'key': 'CompletedNum', 'name': '已完结', 'count': 0}.obs,
-    {'key': 'EndOrderNum', 'name': '二次完结', 'count': 0}.obs,
-    {'key': 'RunAbolishNum', 'name': '已废除', 'count': 0}.obs,
-  ].obs;
   RefreshController refreshCtr = RefreshController();
   @override
   void initState() {

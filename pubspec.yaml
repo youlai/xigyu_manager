@@ -48,6 +48,14 @@ dependencies:
   url_launcher: ^5.4.2
   permission_handler: ^5.0.0
   get_storage: any
+  #工具类库
+#  flustars依赖于Dart常用工具类库common_utils,以及对其他第三方库封装，致力于为大家分享简单易用工具类。如果你有好的工具类欢迎PR.
+#  目前包含SharedPreferences Util, Screen Util, Directory Util, Widget Util, Image Util。
+  flustars: ^0.3.3
+  flutter_phone_direct_caller: ^1.0.1
+  #html
+  flutter_html: any
+  app_settings: ^4.1.1
 
 dev_dependencies:
   flutter_test:

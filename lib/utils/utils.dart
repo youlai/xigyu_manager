@@ -19,6 +19,7 @@ AppBar buildAppBar(String title, List<Widget> actions, BuildContext context,
         style: TextStyle(
             fontSize: 18, color: Colors.black, fontWeight: FontWeight.normal)),
     centerTitle: true,
+    backgroundColor: Colors.white,
     leading: IconButton(
       icon: Image.asset(
         'assets/back.png',

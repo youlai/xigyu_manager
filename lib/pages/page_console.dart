@@ -4,7 +4,7 @@
  * @Author: youlai 761364115@qq.com
  * @Date: 2023-04-03 10:20:05
  * @LastEditors: youlai 761364115@qq.com
- * @LastEditTime: 2023-04-11 17:40:58
+ * @LastEditTime: 2023-04-23 10:29:09
  * @FilePath: /xigyu_manager/lib/main.dart
  * @Description: 控制台
  */
@@ -309,6 +309,8 @@ class _ConsolePageState extends State<ConsolePage>
           Expanded(
             child: Obx(
               () => GridView.builder(
+                shrinkWrap: true,
+                physics: NeverScrollableScrollPhysics(),
                 padding: EdgeInsets.all(10),
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                     //设置列数
