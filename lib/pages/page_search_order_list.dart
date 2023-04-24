@@ -40,6 +40,7 @@ class _SearchOrderPageState extends State<SearchOrderPage>
   void fetchData() {
     var params = {
       'LoginId': loginId.value,
+      'OrderNumber': search,
       'State': '-1',
       'Page': page,
       'Rows': rows,
@@ -134,6 +135,7 @@ class _SearchOrderPageState extends State<SearchOrderPage>
               hintText: '工单号、客户手机号、客户姓名、地址',
               isShowDeleteBtn: true,
               isDense: true,
+              textInputAction: TextInputAction.search,
               border: OutlineInputBorder(
                   /*边角*/
                   borderRadius: BorderRadius.all(
@@ -473,7 +475,7 @@ class _SearchOrderPageState extends State<SearchOrderPage>
                             SizedBox(
                               width: 5,
                             ),
-                            Text(order['Customer']??'--',
+                            Text(order['Customer'] ?? '--',
                                 style: TextStyle(fontSize: 12)),
                           ],
                         ),
@@ -492,7 +494,7 @@ class _SearchOrderPageState extends State<SearchOrderPage>
                                 width: 5,
                               ),
                               Expanded(
-                                child: Text(order['MasterName']??'--',
+                                child: Text(order['MasterName'] ?? '--',
                                     style: TextStyle(fontSize: 12)),
                               ),
                             ],

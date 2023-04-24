@@ -21,6 +21,7 @@ class JhLoginTextField extends StatefulWidget {
   final String labelText; //top提示文字
   final TextEditingController controller;
   final TextInputType keyboardType;
+  final TextInputAction textInputAction;
   final FocusNode focusNode;
   final bool isPwd; //是否是密码，默认不是
   final Widget leftWidget; //左侧widget ，默认隐藏
@@ -41,6 +42,7 @@ class JhLoginTextField extends StatefulWidget {
     Key key,
     this.text,
     this.keyboardType: TextInputType.text,
+    this.textInputAction: TextInputAction.done,
     this.hintText: '',
     this.labelText,
     this.controller,
@@ -122,6 +124,7 @@ class _JhLoginTextFieldState extends State<JhLoginTextField> {
           focusNode: _focusNode,
           controller: _textController,
           keyboardType: widget.keyboardType,
+          textInputAction: widget.textInputAction,
           style: _textStyle,
 //            // 数字、手机号限制格式为0到9(白名单)， 密码限制不包含汉字（黑名单）
 //            inputFormatters: (widget.keyboardType == TextInputType.number || widget.keyboardType == TextInputType.phone) ?
