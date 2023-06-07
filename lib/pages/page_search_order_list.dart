@@ -132,7 +132,7 @@ class _SearchOrderPageState extends State<SearchOrderPage>
             child: JhLoginTextField(
               controller: searchCtr,
 //              leftWidget: Icon(Icons.search,size: 25,),
-              hintText: '工单号、客户手机号、客户姓名、地址',
+              hintText: '工单号',
               isShowDeleteBtn: true,
               isDense: true,
               textInputAction: TextInputAction.search,
