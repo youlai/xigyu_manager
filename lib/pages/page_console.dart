@@ -4,7 +4,7 @@
  * @Author: youlai 761364115@qq.com
  * @Date: 2023-04-03 10:20:05
  * @LastEditors: youlai 761364115@qq.com
- * @LastEditTime: 2023-04-23 10:29:09
+ * @LastEditTime: 2023-05-20 16:52:52
  * @FilePath: /xigyu_manager/lib/main.dart
  * @Description: 控制台
  */
@@ -14,6 +14,7 @@ import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:xigyu_manager/api/api.dart';
 import 'package:xigyu_manager/global/global.dart';
+import 'package:xigyu_manager/pages/page_factory_order_num.dart';
 import 'package:xigyu_manager/utils/request_util.dart';
 
 class ConsolePage extends StatefulWidget {
@@ -35,20 +36,24 @@ class _ConsolePageState extends State<ConsolePage>
     {'key': 'CancelNum', 'name': '废除工单', 'count': 0}.obs,
   ].obs;
 
+  TabController tabCtr;
+
+///开始时间
+RxString addStartTime = ''.obs;
+
+///结束时间
+RxString addEndTime = ''.obs;
   ///0 今日 1昨日 2本月
   RxInt selectTime = 0.obs;
 
-  RxString addStartTime = ''.obs;
-  RxString addEndTime = ''.obs;
+  // RxString addStartTime = ''.obs;
+  // RxString addEndTime = ''.obs;
   RxString dateTimeRange = ''.obs;
-
-  TabController tabCtr;
-
   RefreshController refreshCtr = RefreshController();
   @override
   void initState() {
     super.initState();
-    tabCtr = TabController(length: 4, vsync: this);
+    tabCtr = TabController(length: 5, vsync: this);
     getToday();
   }
 
@@ -129,6 +134,9 @@ class _ConsolePageState extends State<ConsolePage>
                           text: '急需处理',
                         ),
                         Tab(
+                          text: '工厂单量',
+                        ),
+                        Tab(
                           text: '工单区域',
                         ),
                         Tab(
@@ -146,13 +154,14 @@ class _ConsolePageState extends State<ConsolePage>
                 child: TabBarView(controller: tabCtr, children: [
               introductionToAnalysis(),
               UrgentTreatment(),
+              FactoryOrderNum(),
               Text('研发中'),
               Text('研发中'),
             ])),
           ],
         ));
   }
-
+///分析概论
   Widget introductionToAnalysis() {
     return SmartRefresher(
       controller: refreshCtr,
@@ -265,7 +274,7 @@ class _ConsolePageState extends State<ConsolePage>
                   firstDate: DateTime(2017, 9, 7, 17, 30),
                   lastDate: DateTime.now());
               if (timeRange == null) return;
-              selectTime.value=-1;
+              selectTime.value = -1;
               debugPrint(timeRange.toString());
               addStartTime.value =
                   DateFormat('yyyy-MM-dd').format(timeRange.start);
@@ -417,7 +426,8 @@ class _UrgentTreatmentState extends State<UrgentTreatment> {
 
   ///获取统计数量
   getHomePanel() {
-    RequestUtil.post(Api.getHomePanel, {'LoginId': loginId.value}).then((value) {
+    RequestUtil.post(Api.getHomePanel, {'LoginId': loginId.value})
+        .then((value) {
       if (value['Success']) {
         refreshCtr.refreshCompleted();
         Map data = value['rows'];

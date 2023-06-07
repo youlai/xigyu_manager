@@ -2,7 +2,7 @@
  * @Author: youlai 761364115@qq.com
  * @Date: 2023-04-03 10:24:38
  * @LastEditors: youlai 761364115@qq.com
- * @LastEditTime: 2023-04-24 15:01:40
+ * @LastEditTime: 2023-05-20 15:19:56
  * @FilePath: /xigyu_manager/lib/api/api.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -81,4 +81,10 @@ class Api {
 
   ///禁用师傅
   static String forbidMaster = "MasterAccount/Disable";
+
+  ///获取充值列表
+  static String getRechargeList = "Recharge/GetPageList";
+
+  ///获取工厂工单量
+  static String getFactoryOrderNum = "Order/GetFactoryOrderNum";
 }

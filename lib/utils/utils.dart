@@ -56,7 +56,7 @@ void showToast(String msg) {
       textColor: Colors.white);
 }
 
-///isBack 是否支持
+///isBack 是否支持侧滑返回
 Future pushTo(BuildContext context, Widget page, {isBack = true}) {
 //  return Navigator.of(context)
 //      .push(MaterialPageRoute(builder: (context) => page));

@@ -4,7 +4,7 @@
  * @Author: youlai 761364115@qq.com
  * @Date: 2023-04-03 10:20:05
  * @LastEditors: youlai 761364115@qq.com
- * @LastEditTime: 2023-04-24 15:13:15
+ * @LastEditTime: 2023-06-01 15:28:57
  * @FilePath: /xigyu_manager/lib/main.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -23,10 +23,12 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:xigyu_manager/api/api.dart';
 import 'package:xigyu_manager/global/global.dart';
+import 'package:xigyu_manager/pages/gzx_dropdown_menu_test_page.dart';
 import 'package:xigyu_manager/pages/page_factory.dart';
 import 'package:xigyu_manager/pages/page_home.dart';
 import 'package:xigyu_manager/pages/page_login.dart';
 import 'package:xigyu_manager/pages/page_order.dart';
+import 'package:xigyu_manager/pages/page_recharge.dart';
 import 'package:xigyu_manager/utils/request_util.dart';
 import 'package:xigyu_manager/utils/screen_utils.dart';
 import 'package:xigyu_manager/utils/utils.dart';
@@ -346,11 +348,22 @@ class _DrawerState extends State<Drawer> {
                                             }
                                             break;
                                           case '所有工单':
-                                            pushTo(context, OrderPage());
+                                            pushTo(context, OrderPage(),
+                                                isBack: false);
                                             break;
                                           case '全部工单':
-                                            pushTo(context, OrderPage());
+                                            pushTo(context, OrderPage(),
+                                                isBack: false);
                                             break;
+                                          case '充值管理':
+                                            pushTo(context, RechargePage(),
+                                                isBack: false);
+                                            break;
+                                          // case '提现管理':
+                                          //   pushTo(context,
+                                          //       GZXDropDownMenuTestPage(),
+                                          //       isBack: false);
+                                          //   break;
                                           default:
                                             showToast(name);
                                         }
