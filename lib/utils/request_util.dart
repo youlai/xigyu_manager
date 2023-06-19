@@ -2,6 +2,8 @@ import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:xigyu_manager/api/api.dart';
+import 'package:xigyu_manager/global/global.dart';
+import 'package:xigyu_manager/pages/page_login.dart';
 import 'package:xigyu_manager/utils/json_utils.dart';
 import 'package:xigyu_manager/utils/utils.dart';
 import 'package:xigyu_manager/widgets/loading_dialog.dart';
@@ -19,14 +21,14 @@ class RequestUtil {
 //        print('data:\n${options.data}');
 //        print('queryParameters:\n${options.queryParameters}');
     if (kDebugMode) {
-      JsonUtil.printJson(options.headers);
-      JsonUtil.printJson(options.data);
+      // JsonUtil.printJson(options.headers);
+      // JsonUtil.printJson(options.data);
     }
     return handler.next(options);
   }, onResponse: (Response response, ResponseInterceptorHandler handler) {
     if (kDebugMode) {
       JsonUtil.printRequest(response);
-      // JsonUtil.printRespond(response);
+      JsonUtil.printRespond(response);
     }
 //        print('=============================response============================');
 //        print('url:${response.request.uri}');
@@ -98,11 +100,12 @@ class RequestUtil {
 
   ///请求api
   static Future<Map> request(String url,
-      {data,
+      {Map<String, dynamic> data,
       method,
       baseUrl = true,
       Map<String, dynamic> queryParameters}) async {
     data = data ?? {};
+    data['Token'] = token.value ?? '';
     method = method ?? "get";
     var dio = getInstance();
     if (baseUrl) {
@@ -110,6 +113,7 @@ class RequestUtil {
     } else {
       dio.options.baseUrl = '';
     }
+    dio.options.headers = {'content-type': 'application/x-www-form-urlencoded'};
     var res;
     if (method == "get") {
       var response = await dio.get(url);
@@ -125,13 +129,13 @@ class RequestUtil {
 
   ///get
   static Future<Map> get(url, data, {baseUrl = true}) =>
-      request(url, data: data, baseUrl: baseUrl);
+      request(url, data: Map<String, dynamic>.from(data), baseUrl: baseUrl);
 
   ///post
   static Future<Map> post(url, data,
           {baseUrl = true, Map<String, dynamic> queryParameters}) =>
       request(url,
-          data: data,
+          data: Map<String, dynamic>.from(data),
           method: "post",
           baseUrl: baseUrl,
           queryParameters: queryParameters);

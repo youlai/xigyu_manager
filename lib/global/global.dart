@@ -2,7 +2,7 @@
  * @Author: youlai 761364115@qq.com
  * @Date: 2023-04-03 10:24:38
  * @LastEditors: youlai 761364115@qq.com
- * @LastEditTime: 2023-05-20 15:38:09
+ * @LastEditTime: 2023-06-14 14:22:39
  * @FilePath: /xigyu_manager/lib/api/api.dart
  * @Description: 全局变量
  */
@@ -22,6 +22,9 @@ RxString loginId = ''.obs;
 ///是否是超级管理员
 RxBool isAdmin = false.obs;
 
+///token
+RxString token = ''.obs;
+
 ///当前登录账号
 RxMap account = RxMap();
 
@@ -36,7 +39,6 @@ RxInt serviceId = (-1).obs;
 
 ///选中的工厂ID
 RxInt factoryId = (-1).obs;
-
 
 ///主题色
 Color mainColor = Colors.blue;

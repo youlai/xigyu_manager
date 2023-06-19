@@ -4,7 +4,7 @@
  * @Author: youlai 761364115@qq.com
  * @Date: 2023-04-03 10:20:05
  * @LastEditors: youlai 761364115@qq.com
- * @LastEditTime: 2023-05-20 16:52:52
+ * @LastEditTime: 2023-06-16 14:23:13
  * @FilePath: /xigyu_manager/lib/main.dart
  * @Description: 控制台
  */
@@ -15,7 +15,9 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:xigyu_manager/api/api.dart';
 import 'package:xigyu_manager/global/global.dart';
 import 'package:xigyu_manager/pages/page_factory_order_num.dart';
+import 'package:xigyu_manager/pages/page_login.dart';
 import 'package:xigyu_manager/utils/request_util.dart';
+import 'package:xigyu_manager/utils/utils.dart';
 
 class ConsolePage extends StatefulWidget {
   const ConsolePage({Key key}) : super(key: key);
@@ -38,11 +40,12 @@ class _ConsolePageState extends State<ConsolePage>
 
   TabController tabCtr;
 
-///开始时间
-RxString addStartTime = ''.obs;
+  ///开始时间
+  RxString addStartTime = ''.obs;
 
-///结束时间
-RxString addEndTime = ''.obs;
+  ///结束时间
+  RxString addEndTime = ''.obs;
+
   ///0 今日 1昨日 2本月
   RxInt selectTime = 0.obs;
 
@@ -103,6 +106,17 @@ RxString addEndTime = ''.obs;
             }
           });
         }
+      } else {
+        if (value['msg'] == 'Token不能为空') {
+          showToast('Token失效，请重新登录');
+          box.erase();
+          isAdmin.value = false;
+          groupId.value = -1;
+          serviceId.value = -1;
+          factoryId.value = -1;
+          Navigator.pushReplacement(
+              context, MaterialPageRoute(builder: ((context) => Login())));
+        }
       }
     });
   }
@@ -161,7 +175,8 @@ RxString addEndTime = ''.obs;
           ],
         ));
   }
-///分析概论
+
+  ///分析概论
   Widget introductionToAnalysis() {
     return SmartRefresher(
       controller: refreshCtr,
@@ -314,6 +329,10 @@ RxString addEndTime = ''.obs;
                 ],
               ),
             ),
+          ),
+          Text(
+            '延迟10分钟（此页面数据存在10分钟误差）',
+            style: TextStyle(color: Colors.red),
           ),
           Expanded(
             child: Obx(

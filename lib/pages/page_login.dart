@@ -228,7 +228,7 @@ class LoginState extends State<Login> {
                     Dio dio = RequestUtil.getInstance();
                     dio.options.baseUrl = host;
                     Navigator.of(context).pop();
-                    login();
+                    getIp();
                   }
                 },
               ),
@@ -255,19 +255,46 @@ class LoginState extends State<Login> {
       dio.options.baseUrl = Api.baseUrl;
 //      dio.options.baseUrl = 'http://192.168.0.203:8810/api/';
 //      dio.options.baseUrl = 'http://192.168.0.39:8810/api/'; //小艺
-      login();
+      getIp();
     }
   }
 
-  void login() {
-    RequestUtil.showLoadingDialog(context);
-    RequestUtil.post(Api.login, {'UserId': username, 'Password': password})
+  ///获取IP
+  void getIp() {
+    RequestUtil.get(
+            'https://qifu-api.baidubce.com/ip/local/geo/v1/district', {},
+            baseUrl: false)
         .then((value) {
+      if (value['code'] == 'Success') {
+        var result = value['data'];
+        var params = {
+          'UserId': username,
+          'Password': password,
+          'Ip': value['ip'],
+          'ProvinceName': result['prov'],
+          'CityName': result['city'],
+          'AreaName': result['district'],
+          'Isp': result['isp'],
+          'Lat': result['lat'],
+          'Lng': result['lng'],
+        };
+        login(params);
+      } else {
+        showToast(value['msg']);
+      }
+    });
+  }
+
+  void login(params) {
+    RequestUtil.showLoadingDialog(context);
+    RequestUtil.post(Api.login, params).then((value) {
       RequestUtil.hiddenLoadingDialog(context);
       if (value['Success']) {
         showToast("登陆成功");
-        account.value = value['rows'];
-        loginId.value = value['rows']['UserId'];
+        token.value = value['rows']['Token'];
+        account.value = value['rows']['Model'];
+        loginId.value = value['rows']['Model']['UserId'];
+        box.write('token', token.value);
         box.write('loginId', loginId.value);
         box.write('account', account.value);
         getUserRoler();

@@ -4,7 +4,7 @@
  * @Author: youlai 761364115@qq.com
  * @Date: 2023-04-03 10:20:05
  * @LastEditors: youlai 761364115@qq.com
- * @LastEditTime: 2023-06-01 15:28:57
+ * @LastEditTime: 2023-06-16 14:07:44
  * @FilePath: /xigyu_manager/lib/main.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -37,6 +37,7 @@ import 'package:xigyu_manager/widgets/update_dialog.dart';
 Future<void> main() async {
   await GetStorage.init();
   account.value = box.read('account') ?? {};
+  token.value = box.read('token') ?? '';
   loginId.value = box.read('loginId') ?? '';
   isAdmin.value = box.read('isAdmin') ?? false;
   runApp(const MyApp());
