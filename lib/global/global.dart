@@ -14,7 +14,8 @@ import 'package:get_storage/get_storage.dart';
 import 'package:package_info/package_info.dart';
 
 ///当前版本信息
-Rx<PackageInfo> packageInfo = Rxn();
+Rx<PackageInfo> packageInfo =
+    PackageInfo(appName: '', packageName: '', version: '--', buildNumber: '').obs;
 
 ///当前登录ID
 RxString loginId = ''.obs;

@@ -8,6 +8,7 @@
  * @FilePath: /xigyu_manager/lib/main.dart
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
+// @dart=2.9
 import 'dart:io';
 
 import 'package:cached_network_image/cached_network_image.dart';
@@ -23,10 +24,13 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:xigyu_manager/api/api.dart';
 import 'package:xigyu_manager/global/global.dart';
+import 'package:xigyu_manager/pages/chart_demo.dart';
 import 'package:xigyu_manager/pages/gzx_dropdown_menu_test_page.dart';
+import 'package:xigyu_manager/pages/page_chart_demo.dart';
 import 'package:xigyu_manager/pages/page_factory.dart';
 import 'package:xigyu_manager/pages/page_home.dart';
 import 'package:xigyu_manager/pages/page_login.dart';
+import 'package:xigyu_manager/pages/page_operating_quantity.dart';
 import 'package:xigyu_manager/pages/page_order.dart';
 import 'package:xigyu_manager/pages/page_recharge.dart';
 import 'package:xigyu_manager/utils/request_util.dart';
@@ -40,7 +44,7 @@ Future<void> main() async {
   token.value = box.read('token') ?? '';
   loginId.value = box.read('loginId') ?? '';
   isAdmin.value = box.read('isAdmin') ?? false;
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -56,7 +60,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: account.isEmpty ? Login() : IndexPage(),
+        home: loginId.isEmpty ? Login() : IndexPage(),
       ),
     );
   }
@@ -161,7 +165,7 @@ class _IndexPageState extends State<IndexPage> {
   }
 
   void downloadApk(Map _upgradeInfo) async {
-    Directory tempDir = await getExternalStorageDirectory();
+    Directory tempDir = (await getExternalStorageDirectory());
     String tempPath = tempDir.path;
     savePath = '$tempPath/update_${_upgradeInfo['buildVersion']}.apk';
     File file = File(savePath);
@@ -310,7 +314,7 @@ class _DrawerState extends State<Drawer> {
                       height: 20,
                     ),
                     Obx(() => Text(
-                          '西瓜鱼售后管理系统V${packageInfo.value == null ? '--' : packageInfo.value.version}',
+                          '西瓜鱼售后管理系统V${packageInfo.value.version}',
                           style: TextStyle(
                               color: Colors.black, fontWeight: FontWeight.bold),
                         )),
@@ -379,7 +383,7 @@ class _DrawerState extends State<Drawer> {
                 ),
                 ElevatedButton(
                     onPressed: () {
-                      box.erase();
+                      box.remove('loginId');
                       isAdmin.value = false;
                       groupId.value = -1;
                       serviceId.value = -1;

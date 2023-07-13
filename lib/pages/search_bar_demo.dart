@@ -11,7 +11,7 @@
 import 'package:flutter/material.dart';
 
 class SearchBarDemo extends StatefulWidget {
-  const SearchBarDemo({Key key}) : super(key: key);
+  const SearchBarDemo({Key? key}) : super(key: key);
 
   @override
   SearchBarDemoState createState() => SearchBarDemoState();
@@ -74,7 +74,7 @@ class SearchBarDelegate extends SearchDelegate<String> {
           progress: transitionAnimation,
         ),
         onPressed: () {
-          close(context, null);
+          close(context, '');
         });
   }
 

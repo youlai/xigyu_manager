@@ -460,7 +460,7 @@ class _OrderDetailBState extends State<OrderDetailB> {
         print(str);
         List products = order['Product'];
         num.value = products.length;
-        Map groups = groupBy(products, (e) => e['Product']);
+        Map groups = groupBy(products, (e) => (e! as Map)['Product']);
         groups.forEach((key, value) {
           var pros = [];
           var pro = value[0];
@@ -477,7 +477,7 @@ class _OrderDetailBState extends State<OrderDetailB> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar('工单详情', null, context),
+      appBar: buildAppBar('工单详情', [], context),
       body: Obx(() => order.isEmpty
           ? Center(
               child: CupertinoActivityIndicator(),
@@ -554,7 +554,7 @@ class _OrderDetailBState extends State<OrderDetailB> {
                         color: Colors.white,
                         border: Border(
                             top:
-                                BorderSide(width: 1, color: Colors.grey[200]))),
+                                BorderSide(width: 1, color: Colors.grey[200]!))),
                     padding: EdgeInsets.symmetric(vertical: 10, horizontal: 15),
                     child: Row(
                       children: [
@@ -1662,7 +1662,7 @@ class _OrderDetailBState extends State<OrderDetailB> {
           FlutterPhoneDirectCaller.callNumber(phone);
           return;
         case PermissionStatus.restricted:
-        case PermissionStatus.undetermined:
+        // case PermissionStatus.undetermined:
         case PermissionStatus.permanentlyDenied:
         case PermissionStatus.limited:
         case PermissionStatus.denied:

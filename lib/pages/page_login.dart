@@ -12,7 +12,7 @@ import 'package:xigyu_manager/utils/request_util.dart';
 import 'package:xigyu_manager/utils/utils.dart';
 
 class Login extends StatefulWidget {
-  const Login({Key key}) : super(key: key);
+  const Login({Key? key}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => LoginState();
@@ -40,11 +40,15 @@ class LoginState extends State<Login> {
     'http://192.168.0.39:8810/api/',
     '自定义地址',
   ];
-  String host;
+  late String host;
 
   @override
   void initState() {
     super.initState();
+    userNameCon.text = account['UserId'] ?? '';
+    pwdCon.text = account['DeCode'] ?? '';
+    username = account['UserId'] ?? '';
+    password = account['DeCode'] ?? '';
   }
 
   @override
@@ -189,7 +193,7 @@ class LoginState extends State<Login> {
                                   .toList(),
                               onChanged: (value) {
                                 print(value);
-                                host = value;
+                                host = value as String;
                                 hostCtr.text = (value == '自定义地址' ? '' : value);
                                 state(() {});
                               }))
@@ -242,7 +246,7 @@ class LoginState extends State<Login> {
   void hideKeyboard(BuildContext context) {
     FocusScopeNode currentFocus = FocusScope.of(context);
     if (!currentFocus.hasPrimaryFocus && currentFocus.focusedChild != null) {
-      FocusManager.instance.primaryFocus.unfocus();
+      FocusManager.instance.primaryFocus!.unfocus();
     }
   }
 

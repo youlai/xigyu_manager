@@ -28,7 +28,7 @@ class OrderRecordPageState extends State<OrderRecordPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar('工单跟踪', null, context),
+      appBar: buildAppBar('工单跟踪', [], context),
       body: buildBody(context),
     );
   }

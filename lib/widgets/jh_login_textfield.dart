@@ -19,38 +19,38 @@ class JhLoginTextField extends StatefulWidget {
   final String text;
   final String hintText;
   final String labelText; //top提示文字
-  final TextEditingController controller;
+  final TextEditingController? controller;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
-  final FocusNode focusNode;
+  final FocusNode? focusNode;
   final bool isPwd; //是否是密码，默认不是
-  final Widget leftWidget; //左侧widget ，默认隐藏
-  final Widget rightWidget; //右侧widget ，默认隐藏
+  final Widget? leftWidget; //左侧widget ，默认隐藏
+  final Widget? rightWidget; //右侧widget ，默认隐藏
   final int maxLength; //最大长度，默认20
   final bool isShowDeleteBtn; //是否显示右侧删除按钮，默认不显示
-  final List<TextInputFormatter> inputFormatters;
-  final _InputCallBack inputCallBack;
-  final OnEditingComplete onEditingComplete;
-  final String pwdOpen; //自定义密码图片路径 睁眼
-  final String pwdClose; //自定义密码图片路径 闭眼
-  final InputBorder border; //边框样式
+  final List<TextInputFormatter>? inputFormatters;
+  final _InputCallBack? inputCallBack;
+  final OnEditingComplete? onEditingComplete;
+  final String? pwdOpen; //自定义密码图片路径 睁眼
+  final String? pwdClose; //自定义密码图片路径 闭眼
+  final InputBorder? border; //边框样式
   final bool isDense; //是否紧凑显示，默认false
   final bool enable; //是否可用，默认true
-  final GestureTapCallback onTap;
+  final GestureTapCallback? onTap;
 
   const JhLoginTextField({
-    Key key,
-    this.text,
-    this.keyboardType: TextInputType.text,
-    this.textInputAction: TextInputAction.done,
-    this.hintText: '',
-    this.labelText,
+    Key? key,
+    this.text='',
+    this.keyboardType = TextInputType.text,
+    this.textInputAction = TextInputAction.done,
+    this.hintText = '',
+    this.labelText='',
     this.controller,
     this.focusNode,
     this.isPwd = false,
     this.leftWidget,
     this.rightWidget,
-    this.maxLength: 20,
+    this.maxLength = 20,
     this.isShowDeleteBtn = false,
     this.inputFormatters,
     this.inputCallBack,
@@ -58,8 +58,8 @@ class JhLoginTextField extends StatefulWidget {
     this.pwdOpen,
     this.pwdClose,
     this.border,
-    this.isDense: false,
-    this.enable: true,
+    this.isDense = false,
+    this.enable = true,
     this.onTap,
   }) : super(key: key);
 
@@ -68,12 +68,12 @@ class JhLoginTextField extends StatefulWidget {
 }
 
 class _JhLoginTextFieldState extends State<JhLoginTextField> {
-  TextEditingController _textController;
-  FocusNode _focusNode;
-  bool _isShowDelete;
-  bool _isHideenPwdBtn; //是否隐藏 右侧密码明文切换按钮 ，密码样式才显示（isPwd =true），
-  bool _pwdShow; //控制密码 明文切换
-  Widget _pwdImg; //自定义密码图片
+  late TextEditingController _textController;
+  late FocusNode _focusNode;
+  late bool _isShowDelete;
+  late bool _isHideenPwdBtn; //是否隐藏 右侧密码明文切换按钮 ，密码样式才显示（isPwd =true），
+  late bool _pwdShow; //控制密码 明文切换
+  late Widget _pwdImg; //自定义密码图片
 
   @override
   void initState() {
@@ -81,9 +81,9 @@ class _JhLoginTextFieldState extends State<JhLoginTextField> {
     super.initState();
 
     _textController =
-        widget.controller != null ? widget.controller : TextEditingController();
+        widget.controller ?? TextEditingController();
     _textController.text = widget.text;
-    _focusNode = widget.focusNode != null ? widget.focusNode : FocusNode();
+    _focusNode = (widget.focusNode ?? FocusNode());
     _isHideenPwdBtn = !widget.isPwd;
     _pwdShow = widget.isPwd;
 
@@ -103,10 +103,10 @@ class _JhLoginTextFieldState extends State<JhLoginTextField> {
   @override
   Widget build(BuildContext context) {
     if (widget.pwdOpen != null && widget.pwdClose != null) {
-      if (widget.pwdOpen.isNotEmpty && widget.pwdClose.isNotEmpty) {
+      if (widget.pwdOpen!.isNotEmpty && widget.pwdClose!.isNotEmpty) {
         _pwdImg = _pwdShow
-            ? ImageIcon(AssetImage(widget.pwdClose))
-            : ImageIcon(AssetImage(widget.pwdOpen));
+            ? ImageIcon(AssetImage(widget.pwdClose!))
+            : ImageIcon(AssetImage(widget.pwdOpen!));
       } else {
         _pwdImg = Icon(_pwdShow ? Icons.visibility_off : Icons.visibility);
       }
@@ -147,7 +147,7 @@ class _JhLoginTextFieldState extends State<JhLoginTextField> {
           obscureText: _pwdShow,
           onChanged: (value) {
             if (widget.inputCallBack != null) {
-              widget.inputCallBack(_textController.text);
+              widget.inputCallBack!(_textController.text);
             }
           },
           onEditingComplete: widget.onEditingComplete,
@@ -174,7 +174,7 @@ class _JhLoginTextFieldState extends State<JhLoginTextField> {
                       onPressed: () {
                         _textController.text = "";
                         if (widget.inputCallBack != null) {
-                          widget.inputCallBack(_textController.text);
+                          widget.inputCallBack!(_textController.text);
                         }
                       })
                   : Text(""),
@@ -197,7 +197,7 @@ class _JhLoginTextFieldState extends State<JhLoginTextField> {
                     });
                   },
                 )),
-            widget.rightWidget != null ? widget.rightWidget : Container(),
+            widget.rightWidget ?? Container(),
           ],
         ),
       ],

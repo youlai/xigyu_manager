@@ -49,8 +49,11 @@ class Api {
   ///获取工单面板数量
   static String getOrderPanelNum = "Order/GetOrderPanelNum";
 
-  ///获取工单面板急需处理数量
+  ///获取工单面板急需处理数量 (今日)
   static String getDealwithPanelNum = "Order/GetDealwithPanelNum";
+
+  ///获取工单面板急需处理数量（昨日）
+  static String dealwithPanelGetNum = "DealwithPanel/GetNum";
 
   ///获取工单面板快捷操作数量
   static String getOperatePanelNum = "Order/GetOperatePanelNum";
@@ -87,4 +90,22 @@ class Api {
 
   ///获取工厂工单量
   static String getFactoryOrderNum = "Order/GetFactoryOrderNum";
+
+  ///客服利润率
+  static String profitAdminRate = "Account/ProfitAdminRate";
+
+  ///费用申请率
+  static String feeRate = "Account/FeeRate";
+
+  ///留存率
+  static String totalRate = "Account/TotalRate";
+
+  ///完结时效率
+  static String endRate = "Account/EndRate";
+
+  ///工单操作量
+  static String getNum = "OrderAccess/GetNum";
+
+  ///用户联系量
+  static String getContactUseNum = "Order/GetContactUseNum";
 }

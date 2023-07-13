@@ -65,6 +65,6 @@ Future pushTo(BuildContext context, Widget page, {isBack = true}) {
       : CupertinoPageRoute(builder: (context) => page));
 }
 
-pop<T>(BuildContext context, [T t]) {
+pop<T>(BuildContext context, [T? t]) {
   return Navigator.of(context).pop(t);
 }

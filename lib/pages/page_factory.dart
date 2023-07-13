@@ -20,7 +20,7 @@ import 'package:xigyu_manager/utils/utils.dart';
 class FactoryManage extends StatefulWidget {
   ///0有取消按钮 1无取消按钮
   int type;
-  FactoryManage({Key key, this.type = 0}) : super(key: key);
+  FactoryManage({Key? key, this.type = 0}) : super(key: key);
 
   @override
   State<FactoryManage> createState() => _FactoryManageState();
@@ -40,7 +40,7 @@ class _FactoryManageState extends State<FactoryManage> {
   RefreshController refreshController = RefreshController();
   // The focus node to use for manipulating focus on the search page. This is
   // managed, owned, and set by the _SearchPageRoute using this delegate.
-  FocusNode _focusNode;
+  late FocusNode _focusNode;
 
   final TextEditingController _queryTextController = TextEditingController();
   @override
@@ -230,7 +230,7 @@ class _FactoryManageState extends State<FactoryManage> {
                                                                       onChanged:
                                                                           (value) {
                                                                         type.value =
-                                                                            value;
+                                                                            value as int;
                                                                       }))),
                                                         ],
                                                       ),

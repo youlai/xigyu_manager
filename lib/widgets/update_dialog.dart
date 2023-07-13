@@ -13,9 +13,9 @@ class UpdateDialog extends StatefulWidget {
 
   UpdateDialog({
     this.key,
-    this.upgradeInfo,
-    this.onClickWhenDownload,
-    this.onClickWhenNotDownload,
+    required this.upgradeInfo,
+    required this.onClickWhenDownload,
+    required this.onClickWhenNotDownload,
   }) : super(key: key);
 
   @override
@@ -30,7 +30,7 @@ class UpdateDialogState extends State<UpdateDialog> {
     super.initState();
     if (Platform.isAndroid) {
       getExternalStorageDirectory().then((tempDir) {
-        String tempPath = tempDir.path;
+        String? tempPath = tempDir?.path;
         String savePath =
             '$tempPath/update_${widget.upgradeInfo['buildVersion']}.apk';
         File file = File(savePath);

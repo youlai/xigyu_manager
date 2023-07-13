@@ -15,7 +15,7 @@ import 'package:xigyu_manager/pages/page_console.dart';
 import 'package:xigyu_manager/pages/page_order_panel.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -26,7 +26,7 @@ class _HomePageState extends State<HomePage>
   ///0 控制台 1工单面板
   RxInt selectType = 0.obs;
 
-  PageController pageCtr;
+  late PageController pageCtr;
   @override
   void initState() {
     super.initState();
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage>
                             //   ),
                             // ),
                             Obx(() => Text(
-                                  'V${packageInfo.value == null ? '--' : packageInfo.value.version}',
+                                  'V${packageInfo.value.version}',
                                   style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold),

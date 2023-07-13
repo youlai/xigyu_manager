@@ -1,3 +1,11 @@
+/// 
+/// Author: youlai 761364115@qq.com
+/// Date: 2023-04-03 11:03:13
+/// LastEditors: youlai 761364115@qq.com
+/// LastEditTime: 2023-07-11 11:06:16
+/// FilePath: /xigyu_manager/lib/utils/screen_utils.dart
+/// Description: 
+/// 
 
 import 'dart:ui' as ui show window;
 
@@ -9,7 +17,8 @@ class JhScreenUtils {
   static init(BuildContext context) {
     //假如设计稿是按iPhone6的尺寸设计的(iPhone6 750*1334)
     //设置字体大小根据系统的“字体大小”辅助选项来进行缩放,默认为false
-    ScreenUtil.init(context, width: 750, height: 1334, allowFontScaling: false);
+    // ScreenUtil.init(context, width: 750, height: 1334, allowFontScaling: false);
+    ScreenUtil.init(context);
   }
 
   static setWidth(double width) {
@@ -28,13 +37,13 @@ class JhScreenUtils {
   //
   // static double get screenHeight => ScreenUtil.screenHeight;
 
-  static double get screenWidthPx => ScreenUtil.screenWidthPx;
+  // static double get screenWidthPx => ScreenUtil.screenWidthPx;
 
-  static double get screenHeightPx => ScreenUtil.screenHeightPx;
+  // static double get screenHeightPx => ScreenUtil.screenHeightPx;
 
-  static double get statusBarHeight => ScreenUtil.statusBarHeight;
+  // static double get statusBarHeight => ScreenUtil.statusBarHeight;
 
-  static double get bottomBarHeight => ScreenUtil.bottomBarHeight;
+  // static double get bottomBarHeight => ScreenUtil.bottomBarHeight;
 
   //系统方法获取
 

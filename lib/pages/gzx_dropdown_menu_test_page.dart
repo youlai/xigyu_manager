@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:gzx_dropdown_menu/gzx_dropdown_menu.dart';
 
 class SortCondition {
-  String name;
-  bool isSelected;
+  String? name;
+  bool? isSelected;
 
   SortCondition({
     this.name,
@@ -21,8 +21,8 @@ class _GZXDropDownMenuTestPageState extends State<GZXDropDownMenuTestPage> {
   List<String> _dropDownHeaderItemStrings = ['全城', '品牌', '距离近', '筛选'];
   List<SortCondition> _brandSortConditions = [];
   List<SortCondition> _distanceSortConditions = [];
-  SortCondition _selectBrandSortCondition;
-  SortCondition _selectDistanceSortCondition;
+  late SortCondition _selectBrandSortCondition;
+  late SortCondition _selectDistanceSortCondition;
   GZXDropdownMenuController _dropdownMenuController =
       GZXDropdownMenuController();
 
@@ -144,7 +144,7 @@ class _GZXDropDownMenuTestPageState extends State<GZXDropDownMenuTestPage> {
                 onItemTap: (index) {
                   if (index == 3) {
                     _dropdownMenuController.hide();
-                    _scaffoldKey.currentState.openEndDrawer();
+                    _scaffoldKey.currentState?.openEndDrawer();
                   }
                 },
 //                // 头部的高度
@@ -225,9 +225,9 @@ class _GZXDropDownMenuTestPageState extends State<GZXDropDownMenuTestPage> {
                       _buildConditionListWidget(_brandSortConditions, (value) {
                     _selectBrandSortCondition = value;
                     _dropDownHeaderItemStrings[1] =
-                        _selectBrandSortCondition.name == '全部'
+                        (_selectBrandSortCondition.name == '全部'
                             ? '品牌'
-                            : _selectBrandSortCondition.name;
+                            : _selectBrandSortCondition.name)!;
                     _dropdownMenuController.hide();
                     setState(() {});
                   })),
@@ -237,7 +237,7 @@ class _GZXDropDownMenuTestPageState extends State<GZXDropDownMenuTestPage> {
                       _distanceSortConditions, (value) {
                     _selectDistanceSortCondition = value;
                     _dropDownHeaderItemStrings[2] =
-                        _selectDistanceSortCondition.name;
+                        _selectDistanceSortCondition.name!;
                     _dropdownMenuController.hide();
                     setState(() {});
                   })),
@@ -404,15 +404,15 @@ class _GZXDropDownMenuTestPageState extends State<GZXDropDownMenuTestPage> {
             ),
             Expanded(
               child: Text(
-                goodsSortCondition.name,
+                goodsSortCondition.name!,
                 style: TextStyle(
-                  color: goodsSortCondition.isSelected
+                  color: goodsSortCondition.isSelected!
                       ? Theme.of(context).primaryColor
                       : Colors.black,
                 ),
               ),
             ),
-            goodsSortCondition.isSelected
+            goodsSortCondition.isSelected!
                 ? Icon(
                     Icons.check,
                     color: Theme.of(context).primaryColor,

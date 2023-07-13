@@ -1,17 +1,25 @@
+/// 
+/// Author: youlai 761364115@qq.com
+/// Date: 2023-04-03 13:19:08
+/// LastEditors: youlai 761364115@qq.com
+/// LastEditTime: 2023-07-11 11:01:45
+/// FilePath: /xigyu_manager/lib/widgets/loading_dialog.dart
+/// Description: 
+/// 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class LoadingDialog extends Dialog {
 
   LoadingDialog({
-    this.title,
+    this.title='',
     this.isCancel = true,
     this.indicatorRadius = 20,
     this.textSize = 14,
-    Color color,
-    Color textColor,
-    BorderRadiusGeometry borderRadius,
-    EdgeInsetsGeometry padding,
+    Color? color,
+    Color? textColor,
+    BorderRadiusGeometry? borderRadius,
+    EdgeInsetsGeometry? padding,
   }): _borderRadius = borderRadius == null ? BorderRadius.circular(10) : borderRadius,
         _padding = padding == null ? EdgeInsets.fromLTRB(20, 15, 20, 15) : padding,
         _color = color == null ? Colors.white : color,

@@ -253,7 +253,7 @@ class _MasterPageState extends State<MasterPage>
                     clipBehavior: Clip.hardEdge,
                     margin: EdgeInsets.only(bottom: 10, right: 5),
                     decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey[100]),
+                      border: Border.all(color: Colors.grey[100]!),
                       borderRadius: BorderRadius.all(Radius.circular(75)),
                     ),
                     child: CachedNetworkImage(
@@ -348,7 +348,7 @@ class _MasterPageState extends State<MasterPage>
                                     selectImage: 'assets/star.png',
                                     selectAble: false,
                                     maxRating: 5,
-                                    count: 5,
+                                    count: 5, onRatingUpdate: (String value) {  },
                                   ),
                                 )
                               ],
@@ -402,7 +402,7 @@ class _MasterPageState extends State<MasterPage>
                     margin: EdgeInsets.only(bottom: 10, right: 5),
                     decoration: BoxDecoration(
                       color: Colors.red,
-                      border: Border.all(color: Colors.grey[100]),
+                      border: Border.all(color: Colors.grey[100]!),
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
                     child: Center(
@@ -425,7 +425,7 @@ class _MasterPageState extends State<MasterPage>
                     margin: EdgeInsets.only(bottom: 10, right: 5),
                     decoration: BoxDecoration(
                       color: Color.fromARGB(255, 30, 8, 33),
-                      border: Border.all(color: Colors.grey[100]),
+                      border: Border.all(color: Colors.grey[100]!),
                       borderRadius: BorderRadius.all(Radius.circular(15)),
                     ),
                     child: Center(

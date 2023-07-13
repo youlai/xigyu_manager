@@ -17,11 +17,11 @@ class RatingBar extends StatefulWidget {
     this.count = 5,
     this.value = 10.0,
     this.size = 20,
-    this.nomalImage,
-    this.selectImage,
-    this.padding,
+    required this.nomalImage,
+    required this.selectImage,
+    required this.padding,
     this.selectAble = false,
-    @required this.onRatingUpdate
+    required this.onRatingUpdate
   }) : assert(nomalImage != null),
         assert(selectImage != null);
 
@@ -31,7 +31,7 @@ class RatingBar extends StatefulWidget {
 
 class _RatingBarState extends State<RatingBar> {
 
-  double value ;
+  late double value ;
 
   @override
   Widget build(BuildContext context) {
@@ -146,13 +146,13 @@ class _RatingBarState extends State<RatingBar> {
 }
 
 class SMClipper extends CustomClipper<Rect>{
-  final double rating;
+  final double? rating;
   SMClipper({
     this.rating
   }): assert(rating != null);
   @override
   Rect getClip(Size size) {
-    return Rect.fromLTRB(0.0, 0.0, rating , size.height);
+    return Rect.fromLTRB(0.0, 0.0, rating! , size.height);
   }
 
   @override

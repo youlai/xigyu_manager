@@ -16,11 +16,12 @@ import 'package:xigyu_manager/api/api.dart';
 import 'package:xigyu_manager/global/global.dart';
 import 'package:xigyu_manager/pages/page_factory_order_num.dart';
 import 'package:xigyu_manager/pages/page_login.dart';
+import 'package:xigyu_manager/pages/page_profit_rate.dart';
 import 'package:xigyu_manager/utils/request_util.dart';
 import 'package:xigyu_manager/utils/utils.dart';
 
 class ConsolePage extends StatefulWidget {
-  const ConsolePage({Key key}) : super(key: key);
+  const ConsolePage({Key? key}) : super(key: key);
 
   @override
   State<ConsolePage> createState() => _ConsolePageState();
@@ -38,7 +39,7 @@ class _ConsolePageState extends State<ConsolePage>
     {'key': 'CancelNum', 'name': '废除工单', 'count': 0}.obs,
   ].obs;
 
-  TabController tabCtr;
+  late TabController tabCtr;
 
   ///开始时间
   RxString addStartTime = ''.obs;
@@ -56,7 +57,7 @@ class _ConsolePageState extends State<ConsolePage>
   @override
   void initState() {
     super.initState();
-    tabCtr = TabController(length: 5, vsync: this);
+    tabCtr = TabController(length: 6, vsync: this);
     getToday();
   }
 
@@ -151,6 +152,9 @@ class _ConsolePageState extends State<ConsolePage>
                           text: '工厂单量',
                         ),
                         Tab(
+                          text: '客服利润率',
+                        ),
+                        Tab(
                           text: '工单区域',
                         ),
                         Tab(
@@ -169,6 +173,7 @@ class _ConsolePageState extends State<ConsolePage>
               introductionToAnalysis(),
               UrgentTreatment(),
               FactoryOrderNum(),
+              ProfitRate(),
               Text('研发中'),
               Text('研发中'),
             ])),
@@ -198,142 +203,170 @@ class _ConsolePageState extends State<ConsolePage>
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.grey[400], width: 0.5),
-                borderRadius: BorderRadius.all(Radius.circular(5))),
+            margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: Row(
-              mainAxisSize: MainAxisSize.min,
               children: [
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    selectTime.value = 0;
-                    getToday();
-                  },
-                  child: Obx(() => Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(
-                          color: selectTime.value == 0
-                              ? Colors.blue
-                              : Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(5),
-                              bottomLeft: Radius.circular(5))),
-                      child: Text(
-                        '今日',
-                        style: TextStyle(
-                            color: selectTime.value == 0
-                                ? Colors.white
-                                : Colors.black),
-                      ))),
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(right: 5),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border:
+                            Border.all(color: Colors.grey[400]!, width: 0.5),
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              selectTime.value = 0;
+                              getToday();
+                            },
+                            child: Obx(() => Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                    color: selectTime.value == 0
+                                        ? Colors.blue
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(5),
+                                        bottomLeft: Radius.circular(5))),
+                                child: Text(
+                                  '今日',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: selectTime.value == 0
+                                          ? Colors.white
+                                          : Colors.black),
+                                ))),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              selectTime.value = 1;
+                              getYesterday();
+                            },
+                            child: Obx(() => Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                    color: selectTime.value == 1
+                                        ? Colors.blue
+                                        : Colors.white,
+                                    border: Border.symmetric(
+                                        vertical: BorderSide(
+                                            color: Colors.grey[400]!,
+                                            width: 0.5))),
+                                child: Text(
+                                  '昨日',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: selectTime.value == 1
+                                          ? Colors.white
+                                          : Colors.black),
+                                ))),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              selectTime.value = 2;
+                              getThisMonth();
+                            },
+                            child: Obx(() => Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                    color: selectTime.value == 2
+                                        ? Colors.blue
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(5),
+                                        bottomRight: Radius.circular(5))),
+                                child: Text(
+                                  '本月',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: selectTime.value == 2
+                                          ? Colors.white
+                                          : Colors.black),
+                                ))),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    selectTime.value = 1;
-                    getYesterday();
-                  },
-                  child: Obx(() => Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () async {
+                      DateTimeRange? timeRange = await showDateRangePicker(
+                          context: context,
+                          firstDate: DateTime(2017, 9, 7, 17, 30),
+                          lastDate: DateTime.now());
+                      if (timeRange == null) return;
+                      selectTime.value = -1;
+                      debugPrint(timeRange.toString());
+                      addStartTime.value =
+                          DateFormat('yyyy-MM-dd').format(timeRange.start);
+                      addEndTime.value =
+                          DateFormat('yyyy-MM-dd').format(timeRange.end);
+                      dateTimeRange.value =
+                          '${addStartTime.value}~${addEndTime.value}';
+                      getOrderNum();
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(left: 5),
+                      // width: 210,
+                      height: 40,
                       decoration: BoxDecoration(
-                          color: selectTime.value == 1
-                              ? Colors.blue
-                              : Colors.white,
-                          border: Border.symmetric(
-                              vertical: BorderSide(
-                                  color: Colors.grey[400], width: 0.5))),
-                      child: Text(
-                        '昨日',
-                        style: TextStyle(
-                            color: selectTime.value == 1
-                                ? Colors.white
-                                : Colors.black),
-                      ))),
-                ),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    selectTime.value = 2;
-                    getThisMonth();
-                  },
-                  child: Obx(() => Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(
-                          color: selectTime.value == 2
-                              ? Colors.blue
-                              : Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(5),
-                              bottomRight: Radius.circular(5))),
-                      child: Text(
-                        '本月',
-                        style: TextStyle(
-                            color: selectTime.value == 2
-                                ? Colors.white
-                                : Colors.black),
-                      ))),
+                          color: Colors.white,
+                          border:
+                              Border.all(color: Colors.grey[400]!, width: 0.5),
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.edit_calendar,
+                              size: 15,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Expanded(
+                            child: Obx(() => Text(dateTimeRange.value,
+                            overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 12))),
+                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.all(8.0),
+                          //   child: Icon(
+                          //     Icons.keyboard_arrow_down,
+                          //     size: 15,
+                          //     color: Colors.grey,
+                          //   ),
+                          // )
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
           ),
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () async {
-              DateTimeRange timeRange = await showDateRangePicker(
-                  context: context,
-                  firstDate: DateTime(2017, 9, 7, 17, 30),
-                  lastDate: DateTime.now());
-              if (timeRange == null) return;
-              selectTime.value = -1;
-              debugPrint(timeRange.toString());
-              addStartTime.value =
-                  DateFormat('yyyy-MM-dd').format(timeRange.start);
-              addEndTime.value = DateFormat('yyyy-MM-dd').format(timeRange.end);
-              dateTimeRange.value = '${addStartTime.value}~${addEndTime.value}';
-              getOrderNum();
-            },
-            child: Container(
-              margin: EdgeInsets.only(bottom: 10),
-              // width: 210,
-              height: 40,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey[400], width: 0.5),
-                  borderRadius: BorderRadius.all(Radius.circular(5))),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(
-                      Icons.edit_calendar,
-                      size: 15,
-                      color: Colors.grey,
-                    ),
-                  ),
-                  Obx(() => Text(dateTimeRange.value ?? '--',
-                      style: TextStyle(fontSize: 12))),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(
-                      Icons.keyboard_arrow_down,
-                      size: 15,
-                      color: Colors.grey,
-                    ),
-                  )
-                ],
-              ),
-            ),
-          ),
-          Text(
-            '延迟10分钟（此页面数据存在10分钟误差）',
-            style: TextStyle(color: Colors.red),
-          ),
+          // Text(
+          //   '延迟10分钟（此页面数据存在10分钟误差）',
+          //   style: TextStyle(color: Colors.red),
+          // ),
           Expanded(
             child: Obx(
               () => GridView.builder(
@@ -356,7 +389,7 @@ class _ConsolePageState extends State<ConsolePage>
                       decoration: BoxDecoration(
                           color: Colors.white,
                           border:
-                              Border.all(color: Colors.grey[400], width: 0.5),
+                              Border.all(color: Colors.grey[400]!, width: 0.5),
                           borderRadius: BorderRadius.all(Radius.circular(5))),
                       child: Row(
                         children: [
@@ -412,7 +445,7 @@ class _ConsolePageState extends State<ConsolePage>
 
 ///急需处理
 class UrgentTreatment extends StatefulWidget {
-  const UrgentTreatment({Key key}) : super(key: key);
+  const UrgentTreatment({Key? key}) : super(key: key);
 
   @override
   State<UrgentTreatment> createState() => _UrgentTreatmentState();
@@ -486,7 +519,7 @@ class _UrgentTreatmentState extends State<UrgentTreatment> {
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border.all(color: Colors.grey[400], width: 0.5),
+                    border: Border.all(color: Colors.grey[400]!, width: 0.5),
                     borderRadius: BorderRadius.all(Radius.circular(5))),
                 child: Row(
                   children: [

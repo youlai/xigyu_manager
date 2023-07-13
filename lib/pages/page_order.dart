@@ -24,7 +24,7 @@ class OrderPage extends StatefulWidget {
 
 class _OrderPageState extends State<OrderPage>
     with AutomaticKeepAliveClientMixin, TickerProviderStateMixin {
-  TabController tabCtr;
+  late TabController tabCtr;
 
   @override
   void initState() {

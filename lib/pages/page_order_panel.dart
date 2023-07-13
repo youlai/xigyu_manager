@@ -14,10 +14,15 @@ import 'package:intl/intl.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:xigyu_manager/api/api.dart';
 import 'package:xigyu_manager/global/global.dart';
+import 'package:xigyu_manager/pages/page_connection_quantity.dart';
+import 'package:xigyu_manager/pages/page_end_rate.dart';
+import 'package:xigyu_manager/pages/page_fee_rate.dart';
+import 'package:xigyu_manager/pages/page_operating_quantity.dart';
+import 'package:xigyu_manager/pages/page_total_rate.dart';
 import 'package:xigyu_manager/utils/request_util.dart';
 
 class OrderPanel extends StatefulWidget {
-  const OrderPanel({Key key}) : super(key: key);
+  const OrderPanel({Key? key}) : super(key: key);
 
   @override
   State<OrderPanel> createState() => _OrderPanelState();
@@ -57,14 +62,14 @@ class _OrderPanelState extends State<OrderPanel>
   ///工厂
   RxList factoryList = [].obs;
 
-  TabController tabCtr;
+  late TabController tabCtr;
   RefreshController refreshCtr = RefreshController();
   @override
   void initState() {
     super.initState();
-    tabCtr = TabController(length: 3, vsync: this);
+    tabCtr = TabController(length: 8, vsync: this);
     getGroup();
-    getFactoryList();
+    // getFactoryList();
     getToday();
   }
 
@@ -178,78 +183,78 @@ class _OrderPanelState extends State<OrderPanel>
         color: Colors.white,
         child: Column(
           children: [
-            if(isAdmin.value)
-            Container(
-              color: Colors.white,
-              padding: EdgeInsets.all(8),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Obx(() => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: DropdownButton(
-                              hint: Text('操作组'),
-                              value: groupId.value,
-                              isExpanded: true,
-                              isDense: true,
-                              items: groupList
-                                  .map((element) => DropdownMenuItem(
-                                      child: Text(element['Name'] ?? '--'),
-                                      value: element['Id']))
-                                  .toList(),
-                              onChanged: (value) {
-                                groupId.value = value;
-                                getServiceAccount();
-                                getOrderPanelNum();
-                              }),
-                        )),
-                  ),
-                  Expanded(
-                    child: Obx(() => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: DropdownButton(
-                              hint: Text('所属客服'),
-                              value: serviceId.value,
-                              isExpanded: true,
-                              isDense: true,
-                              items: customerList
-                                  .map((element) => DropdownMenuItem(
-                                      child: Text(
-                                          '${element['UserName'] ?? '--'}' +
-                                              (element['TrueName'] != null
-                                                  ? '(${element['TrueName']})'
-                                                  : '')),
-                                      value: element['AccountId']))
-                                  .toList(),
-                              onChanged: (value) {
-                                serviceId.value = value;
-                                getOrderPanelNum();
-                              }),
-                        )),
-                  ),
-                  Expanded(
-                    child: Obx(() => Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: DropdownButton(
-                              hint: Text('所属工厂'),
-                              value: factoryId.value,
-                              isExpanded: true,
-                              isDense: true,
-                              items: factoryList
-                                  .map((element) => DropdownMenuItem(
-                                      child:
-                                          Text(element['FactoryName'] ?? '--'),
-                                      value: element['Id']))
-                                  .toList(),
-                              onChanged: (value) {
-                                factoryId.value = value;
-                                getOrderPanelNum();
-                              }),
-                        )),
-                  ),
-                ],
+            if (isAdmin.value)
+              Container(
+                color: Colors.white,
+                padding: EdgeInsets.all(8),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Obx(() => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: DropdownButton(
+                                hint: Text('操作组'),
+                                value: groupId.value,
+                                isExpanded: true,
+                                isDense: true,
+                                items: groupList
+                                    .map((element) => DropdownMenuItem(
+                                        child: Text(element['Name'] ?? '--'),
+                                        value: element['Id']))
+                                    .toList(),
+                                onChanged: (value) {
+                                  groupId.value = value as int;
+                                  getServiceAccount();
+                                  getOrderPanelNum();
+                                }),
+                          )),
+                    ),
+                    Expanded(
+                      child: Obx(() => Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: DropdownButton(
+                                hint: Text('所属客服'),
+                                value: serviceId.value,
+                                isExpanded: true,
+                                isDense: true,
+                                items: customerList
+                                    .map((element) => DropdownMenuItem(
+                                        child: Text(
+                                            '${element['UserName'] ?? '--'}' +
+                                                (element['TrueName'] != null
+                                                    ? '(${element['TrueName']})'
+                                                    : '')),
+                                        value: element['AccountId']))
+                                    .toList(),
+                                onChanged: (value) {
+                                  serviceId.value = value as int;
+                                  getOrderPanelNum();
+                                }),
+                          )),
+                    ),
+                    // Expanded(
+                    //   child: Obx(() => Padding(
+                    //         padding: const EdgeInsets.all(8.0),
+                    //         child: DropdownButton(
+                    //             hint: Text('所属工厂'),
+                    //             value: factoryId.value,
+                    //             isExpanded: true,
+                    //             isDense: true,
+                    //             items: factoryList
+                    //                 .map((element) => DropdownMenuItem(
+                    //                     child: Text(
+                    //                         element['FactoryName'] ?? '--'),
+                    //                     value: element['Id']))
+                    //                 .toList(),
+                    //             onChanged: (value) {
+                    //               factoryId.value = value as int;
+                    //               getOrderPanelNum();
+                    //             }),
+                    //       )),
+                    // ),
+                  ],
+                ),
               ),
-            ),
             Container(
               color: Colors.grey[200],
               child: Row(
@@ -273,6 +278,21 @@ class _OrderPanelState extends State<OrderPanel>
                         Tab(
                           text: '快捷操作',
                         ),
+                        Tab(
+                          text: '费用申请率',
+                        ),
+                        Tab(
+                          text: '留存率',
+                        ),
+                        Tab(
+                          text: '完结时效率',
+                        ),
+                        Tab(
+                          text: '工单操作量',
+                        ),
+                        Tab(
+                          text: '用户联系量',
+                        ),
                       ],
                       labelColor: Colors.black,
                       indicatorSize: TabBarIndicatorSize.label,
@@ -286,6 +306,11 @@ class _OrderPanelState extends State<OrderPanel>
               introductionToAnalysis(),
               UrgentTreatment(),
               QuickOperation(),
+              FeeRate(),
+              TotalRate(),
+              EndRate(),
+              OperatingQuantity(),
+              ConnectionQuantity(),
             ])),
           ],
         ));
@@ -312,136 +337,164 @@ class _OrderPanelState extends State<OrderPanel>
       child: Column(
         children: [
           Container(
-            margin: EdgeInsets.all(20),
-            decoration: BoxDecoration(
-                color: Colors.white,
-                border: Border.all(color: Colors.grey[400], width: 0.5),
-                borderRadius: BorderRadius.all(Radius.circular(5))),
+            margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
             child: Row(
-              mainAxisSize: MainAxisSize.min,
               children: [
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    selectTime.value = 0;
-                    getToday();
-                  },
-                  child: Obx(() => Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(
-                          color: selectTime.value == 0
-                              ? Colors.blue
-                              : Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topLeft: Radius.circular(5),
-                              bottomLeft: Radius.circular(5))),
-                      child: Text(
-                        '今日',
-                        style: TextStyle(
-                            color: selectTime.value == 0
-                                ? Colors.white
-                                : Colors.black),
-                      ))),
-                ),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    selectTime.value = 1;
-                    getYesterday();
-                  },
-                  child: Obx(() => Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(
-                          color: selectTime.value == 1
-                              ? Colors.blue
-                              : Colors.white,
-                          border: Border.symmetric(
-                              vertical: BorderSide(
-                                  color: Colors.grey[400], width: 0.5))),
-                      child: Text(
-                        '昨日',
-                        style: TextStyle(
-                            color: selectTime.value == 1
-                                ? Colors.white
-                                : Colors.black),
-                      ))),
-                ),
-                GestureDetector(
-                  behavior: HitTestBehavior.opaque,
-                  onTap: () {
-                    selectTime.value = 2;
-                    getThisMonth();
-                  },
-                  child: Obx(() => Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(
-                          color: selectTime.value == 2
-                              ? Colors.blue
-                              : Colors.white,
-                          borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(5),
-                              bottomRight: Radius.circular(5))),
-                      child: Text(
-                        '本月',
-                        style: TextStyle(
-                            color: selectTime.value == 2
-                                ? Colors.white
-                                : Colors.black),
-                      ))),
-                ),
-              ],
-            ),
-          ),
-          GestureDetector(
-            behavior: HitTestBehavior.opaque,
-            onTap: () async {
-              DateTimeRange timeRange = await showDateRangePicker(
-                  context: context,
-                  firstDate: DateTime(2017, 9, 7, 17, 30),
-                  lastDate: DateTime.now());
-              if (timeRange == null) return;
-              selectTime.value = -1;
-              debugPrint(timeRange.toString());
-              addStartTime.value =
-                  DateFormat('yyyy-MM-dd').format(timeRange.start);
-              addEndTime.value = DateFormat('yyyy-MM-dd').format(timeRange.end);
-              dateTimeRange.value = '${addStartTime.value}~${addEndTime.value}';
-              getOrderPanelNum();
-            },
-            child: Container(
-              margin: EdgeInsets.only(bottom: 10),
-              // width: 210,
-              height: 40,
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border.all(color: Colors.grey[400], width: 0.5),
-                  borderRadius: BorderRadius.all(Radius.circular(5))),
-              child: Row(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(
-                      Icons.edit_calendar,
-                      size: 15,
-                      color: Colors.grey,
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(right: 5),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border:
+                            Border.all(color: Colors.grey[400]!, width: 0.5),
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              selectTime.value = 0;
+                              getToday();
+                            },
+                            child: Obx(() => Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                    color: selectTime.value == 0
+                                        ? Colors.blue
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(5),
+                                        bottomLeft: Radius.circular(5))),
+                                child: Text(
+                                  '今日',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: selectTime.value == 0
+                                          ? Colors.white
+                                          : Colors.black),
+                                ))),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              selectTime.value = 1;
+                              getYesterday();
+                            },
+                            child: Obx(() => Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                    color: selectTime.value == 1
+                                        ? Colors.blue
+                                        : Colors.white,
+                                    border: Border.symmetric(
+                                        vertical: BorderSide(
+                                            color: Colors.grey[400]!,
+                                            width: 0.5))),
+                                child: Text(
+                                  '昨日',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: selectTime.value == 1
+                                          ? Colors.white
+                                          : Colors.black),
+                                ))),
+                          ),
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              selectTime.value = 2;
+                              getThisMonth();
+                            },
+                            child: Obx(() => Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                    color: selectTime.value == 2
+                                        ? Colors.blue
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(5),
+                                        bottomRight: Radius.circular(5))),
+                                child: Text(
+                                  '本月',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: selectTime.value == 2
+                                          ? Colors.white
+                                          : Colors.black),
+                                ))),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Obx(() => Text(dateTimeRange.value ?? '--',
-                      style: TextStyle(fontSize: 12))),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Icon(
-                      Icons.keyboard_arrow_down,
-                      size: 15,
-                      color: Colors.grey,
+                ),
+                Expanded(
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () async {
+                      DateTimeRange? timeRange = await showDateRangePicker(
+                          context: context,
+                          firstDate: DateTime(2017, 9, 7, 17, 30),
+                          lastDate: DateTime.now());
+                      if (timeRange == null) return;
+                      selectTime.value = -1;
+                      debugPrint(timeRange.toString());
+                      addStartTime.value =
+                          DateFormat('yyyy-MM-dd').format(timeRange.start);
+                      addEndTime.value =
+                          DateFormat('yyyy-MM-dd').format(timeRange.end);
+                      dateTimeRange.value =
+                          '${addStartTime.value}~${addEndTime.value}';
+                      getOrderPanelNum();
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(left: 5),
+                      // width: 210,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border:
+                              Border.all(color: Colors.grey[400]!, width: 0.5),
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.edit_calendar,
+                              size: 15,
+                              color: Colors.grey,
+                            ),
+                          ),
+                          Expanded(
+                            child: Obx(() => Text(dateTimeRange.value,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 12))),
+                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.all(8.0),
+                          //   child: Icon(
+                          //     Icons.keyboard_arrow_down,
+                          //     size: 15,
+                          //     color: Colors.grey,
+                          //   ),
+                          // )
+                        ],
+                      ),
                     ),
-                  )
-                ],
-              ),
+                  ),
+                ),
+              ],
             ),
           ),
           Expanded(
@@ -466,7 +519,7 @@ class _OrderPanelState extends State<OrderPanel>
                       decoration: BoxDecoration(
                           color: Colors.white,
                           border:
-                              Border.all(color: Colors.grey[400], width: 0.5),
+                              Border.all(color: Colors.grey[400]!, width: 0.5),
                           borderRadius: BorderRadius.all(Radius.circular(5))),
                       child: Row(
                         children: [
@@ -522,7 +575,7 @@ class _OrderPanelState extends State<OrderPanel>
 
 ///急需处理
 class UrgentTreatment extends StatefulWidget {
-  const UrgentTreatment({Key key}) : super(key: key);
+  const UrgentTreatment({Key? key}) : super(key: key);
 
   @override
   State<UrgentTreatment> createState() => _UrgentTreatmentState();
@@ -530,18 +583,32 @@ class UrgentTreatment extends StatefulWidget {
 
 class _UrgentTreatmentState extends State<UrgentTreatment> {
   RxList orderNum = [
-    {'key': 'DayReminderNum', 'name': '今日催单', 'count': 0}.obs,
-    {'key': 'MuchReminderNum', 'name': '多次被催', 'count': 0}.obs,
-    {'key': 'ExceptionNum', 'name': '异常工单', 'count': 0}.obs,
-    {'key': 'OverTimeNum', 'name': '超七工单', 'count': 0}.obs,
-    {'key': 'CheckRejectNum', 'name': '审核驳回', 'count': 0}.obs,
-    {'key': 'MuchBackNum', 'name': '多日未回访', 'count': 0}.obs,
-    {'key': 'DoorDayNum', 'name': '今日需上门', 'count': 0}.obs,
-    {'key': 'OutTimeNum', 'name': '超时未上门', 'count': 0}.obs,
-    {'key': 'PartsHandleNum', 'name': '配件需处理', 'count': 0}.obs,
-    {'key': 'CostHandleNum', 'name': '费用需处理', 'count': 0}.obs,
-    {'key': 'RefuseNum', 'name': '工单被拒接', 'count': 0}.obs,
-    {'key': 'RepairNum', 'name': '工单需返修', 'count': 0}.obs,
+    {
+      'key': 'DayReminderNum',
+      'name': '今日催单',
+      'count': 0,
+      'ycount': 0,
+    }.obs,
+    {'key': 'MuchReminderNum', 'name': '多次被催', 'count': 0, 'ycount': 0}.obs,
+    // {'key': 'ExceptionNum', 'name': '异常工单', 'count': 0,'ycount': 0}.obs,
+    {'key': 'OverTimeNum', 'name': '超七工单', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'CheckRejectNum', 'name': '审核驳回', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'MuchBackNum', 'name': '多日未回访', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'DoorDayNum', 'name': '今日需上门', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'DoorTomorrowNum', 'name': '明日需上门', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'OutTimeNum', 'name': '超时未上门', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'PartsHandleNum', 'name': '配件需处理', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'CostHandleNum', 'name': '费用需处理', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'RefuseNum', 'name': '工单被拒接', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'RepairNum', 'name': '工单需返修', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'ProductNum', 'name': '已到货', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'AnomalyNum', 'name': '异常工单', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'StayNum', 'name': '滞留工单', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'MoreThreeNum', 'name': '超3天工单', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'MoreFiveNum', 'name': '超5天工单', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'MoreSevenNum', 'name': '超7天工单', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'MoreFifteenNum', 'name': '超15天工单', 'count': 0, 'ycount': 0}.obs,
+    {'key': 'MoreThirtyNum', 'name': '超30天工单', 'count': 0, 'ycount': 0}.obs,
   ].obs;
   RefreshController refreshCtr = RefreshController();
   @override
@@ -571,15 +638,30 @@ class _UrgentTreatmentState extends State<UrgentTreatment> {
       'FactoryId': factoryId.value,
     }).then((value) {
       if (value['Success']) {
-        refreshCtr.refreshCompleted();
         Map data = value['rows'];
-        for (var element in orderNum) {
-          data.forEach((key, value) {
-            if (element['key'] == key) {
-              element['count'] = value;
+        RequestUtil.post(Api.dealwithPanelGetNum, {
+          'LoginId': loginId.value,
+          'GroupId': groupId.value,
+          'ServiceId': serviceId.value,
+          'FactoryId': factoryId.value,
+        }).then((value) {
+          if (value['Success']) {
+            refreshCtr.refreshCompleted();
+            Map ydata = value['rows'];
+            for (var element in orderNum) {
+              data.forEach((key, value) {
+                if (element['key'] == key) {
+                  element['count'] = value;
+                }
+              });
+              ydata.forEach((key, value) {
+                if (element['key'] == key) {
+                  element['ycount'] = value;
+                }
+              });
             }
-          });
-        }
+          }
+        });
       }
     });
   }
@@ -609,7 +691,7 @@ class _UrgentTreatmentState extends State<UrgentTreatment> {
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border.all(color: Colors.grey[400], width: 0.5),
+                    border: Border.all(color: Colors.grey[400]!, width: 0.5),
                     borderRadius: BorderRadius.all(Radius.circular(5))),
                 child: Row(
                   children: [
@@ -627,20 +709,43 @@ class _UrgentTreatmentState extends State<UrgentTreatment> {
                               Padding(
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
-                                child: Obx(() => Text(
-                                      '${orderNum[index]['count']}',
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(fontSize: 14),
+                                child: Obx(() => Row(
+                                      children: [
+                                        Text(
+                                          '${orderNum[index]['count']}',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(fontSize: 14),
+                                        ),
+                                        Text(
+                                          '/${orderNum[index]['ycount']}',
+                                          textAlign: TextAlign.center,
+                                          style: TextStyle(
+                                              fontSize: 14, color: Colors.red),
+                                        ),
+                                      ],
                                     )),
                               ),
                               SizedBox(
                                 width: 20,
                               ),
-                              Image.asset(
-                                'assets/upward.png',
-                                width: 10,
-                                height: 10,
-                              ),
+                              Obx(() => Image.asset(
+                                    orderNum[index]['count'] >
+                                            orderNum[index]['ycount']
+                                        ? 'assets/upward.png'
+                                        : 'assets/down.png',
+                                    width: 10,
+                                    height: 10,
+                                  )),
+                              Obx(() => Text(
+                                    '${orderNum[index]['count'] - orderNum[index]['ycount']}',
+                                    textAlign: TextAlign.center,
+                                    style: TextStyle(
+                                        fontSize: 14,
+                                        color: orderNum[index]['count'] >
+                                                orderNum[index]['ycount']
+                                            ? Colors.green
+                                            : Colors.red),
+                                  )),
                             ],
                           ),
                         ],
@@ -662,7 +767,7 @@ class _UrgentTreatmentState extends State<UrgentTreatment> {
 
 ///快捷操作
 class QuickOperation extends StatefulWidget {
-  const QuickOperation({Key key}) : super(key: key);
+  const QuickOperation({Key? key}) : super(key: key);
 
   @override
   State<QuickOperation> createState() => _QuickOperationState();
@@ -729,13 +834,13 @@ class _QuickOperationState extends State<QuickOperation> {
               mainAxisSpacing: 10,
               childAspectRatio: 2),
           scrollDirection: Axis.vertical,
-          itemCount: orderNum.length-1,
+          itemCount: orderNum.length - 1,
           itemBuilder: (context, index) {
             return Container(
                 padding: EdgeInsets.all(10),
                 decoration: BoxDecoration(
                     color: Colors.white,
-                    border: Border.all(color: Colors.grey[400], width: 0.5),
+                    border: Border.all(color: Colors.grey[400]!, width: 0.5),
                     borderRadius: BorderRadius.all(Radius.circular(5))),
                 child: Row(
                   children: [
@@ -744,7 +849,7 @@ class _QuickOperationState extends State<QuickOperation> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            orderNum[index+1]['name'],
+                            orderNum[index + 1]['name'],
                             textAlign: TextAlign.center,
                             style: TextStyle(fontSize: 18),
                           ),
@@ -754,7 +859,7 @@ class _QuickOperationState extends State<QuickOperation> {
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 10),
                                 child: Obx(() => Text(
-                                      '${orderNum[index+1]['count']}',
+                                      '${orderNum[index + 1]['count']}',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(fontSize: 14),
                                     )),
