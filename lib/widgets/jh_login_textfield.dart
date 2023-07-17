@@ -18,7 +18,7 @@ typedef OnEditingComplete = void Function();
 class JhLoginTextField extends StatefulWidget {
   final String text;
   final String hintText;
-  final String labelText; //top提示文字
+  final String? labelText; //top提示文字
   final TextEditingController? controller;
   final TextInputType keyboardType;
   final TextInputAction textInputAction;
@@ -40,11 +40,11 @@ class JhLoginTextField extends StatefulWidget {
 
   const JhLoginTextField({
     Key? key,
-    this.text='',
+    this.text = '',
     this.keyboardType = TextInputType.text,
     this.textInputAction = TextInputAction.done,
     this.hintText = '',
-    this.labelText='',
+    this.labelText,
     this.controller,
     this.focusNode,
     this.isPwd = false,
@@ -80,8 +80,7 @@ class _JhLoginTextFieldState extends State<JhLoginTextField> {
     // TODO: implement initState
     super.initState();
 
-    _textController =
-        widget.controller ?? TextEditingController();
+    _textController = widget.controller ?? TextEditingController();
     _textController.text = widget.text;
     _focusNode = (widget.focusNode ?? FocusNode());
     _isHideenPwdBtn = !widget.isPwd;
@@ -134,8 +133,8 @@ class _JhLoginTextFieldState extends State<JhLoginTextField> {
               : [LengthLimitingTextInputFormatter(widget.maxLength)],
           decoration: InputDecoration(
             contentPadding: EdgeInsets.all(8),
-            prefixIcon: widget.leftWidget,
-            labelText: widget.labelText != null ? widget.labelText : null,
+            // prefixIcon: widget.leftWidget,
+            labelText: widget.labelText,
             hintText: widget.hintText,
             hintStyle: _hintTextStyle,
             isDense: widget.isDense,

@@ -19,26 +19,26 @@ import 'package:xigyu_manager/widgets/rating_bar.dart';
 import '../../utils/request_util.dart';
 import "package:collection/collection.dart";
 
-///指派师傅页面
+///指派客服页面
 
-class MasterPage extends StatefulWidget {
+class CustomerPage extends StatefulWidget {
   var orderId;
   var orderNumber;
-  MasterPage({this.orderId, this.orderNumber});
+  CustomerPage({this.orderId, this.orderNumber});
   @override
-  _MasterPageState createState() => _MasterPageState();
+  _CustomerPageState createState() => _CustomerPageState();
 }
 
-class _MasterPageState extends State<MasterPage>
+class _CustomerPageState extends State<CustomerPage>
     with AutomaticKeepAliveClientMixin {
   var page = 1;
   var rows = 10;
 
-  ///1 同区域师傅 0跨区域师傅
-  RxInt selectType = 1.obs;
+  ///0 同区域客服 1跨区域客服
+  RxInt selectType = 0.obs;
   String search = '';
   TextEditingController searchCtr = TextEditingController();
-  RxList<Map> masterList = <Map>[].obs;
+  RxList<Map> customerList = <Map>[].obs;
   RefreshController refreshController =
       RefreshController(initialRefresh: false);
 
@@ -49,30 +49,30 @@ class _MasterPageState extends State<MasterPage>
   }
 
 // LoginId: Cyl
-// OrderNumber: 230419766027
-// UserId
-// IsArea: 1
+// OrderNum: 230419766027
+// UserName
+// IsArea: 1跨区域 0同区域
 // Page: 1
-// Rows: 10
+// limit: 10
   void fetchData() {
     var params = {
       'LoginId': loginId.value,
-      'OrderNumber': widget.orderNumber,
-      'UserId': search,
-      'Rows': rows,
+      'OrderNum': widget.orderNumber,
+      'UserName': search,
+      'limit': rows,
       'Page': page,
       'IsArea': selectType.value
     };
-    RequestUtil.post(Api.getPageSpace, params).then((value) {
+    RequestUtil.post(Api.getOrderAreaList, params).then((value) {
       if (value['Success']) {
         refreshController.loadComplete();
         refreshController.refreshCompleted();
         List<Map> list = (value['rows']['rows'] as List).cast<Map>();
         if (page == 1) {
-          masterList.value = list;
+          customerList.value = list;
         } else {
           if (list.length > 0) {
-            masterList.addAll(list);
+            customerList.addAll(list);
           } else {
             refreshController.loadNoData();
           }
@@ -123,7 +123,7 @@ class _MasterPageState extends State<MasterPage>
             child: JhLoginTextField(
               controller: searchCtr,
 //              leftWidget: Icon(Icons.search,size: 25,),
-              hintText: '请输入账号或姓名',
+              hintText: '请输入姓名',
               isShowDeleteBtn: true,
               isDense: true,
               border: OutlineInputBorder(
@@ -178,7 +178,7 @@ class _MasterPageState extends State<MasterPage>
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      selectType.value = 1;
+                      selectType.value = 0;
                       page = 1;
                       fetchData();
                     },
@@ -186,12 +186,12 @@ class _MasterPageState extends State<MasterPage>
                         padding:
                             EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                         decoration: BoxDecoration(
-                            color: selectType.value == 1
+                            color: selectType.value == 0
                                 ? Colors.blue
                                 : Colors.blue[200],
                             borderRadius: BorderRadius.all(Radius.circular(5))),
                         child: Text(
-                          '同区域师傅',
+                          '同区域客服',
                           style: TextStyle(color: Colors.white),
                         ))),
                   ),
@@ -206,7 +206,7 @@ class _MasterPageState extends State<MasterPage>
                   GestureDetector(
                     behavior: HitTestBehavior.opaque,
                     onTap: () {
-                      selectType.value = 0;
+                      selectType.value = 1;
                       page = 1;
                       fetchData();
                     },
@@ -214,25 +214,25 @@ class _MasterPageState extends State<MasterPage>
                         padding:
                             EdgeInsets.symmetric(horizontal: 5, vertical: 5),
                         decoration: BoxDecoration(
-                            color: selectType.value == 0
+                            color: selectType.value == 1
                                 ? Colors.blue
                                 : Colors.blue[200],
                             borderRadius: BorderRadius.all(Radius.circular(5))),
                         child: Text(
-                          '跨区域师傅',
+                          '跨区域客服',
                           style: TextStyle(color: Colors.white),
                         ))),
                   ),
                 ],
               ),
               Expanded(
-                child: Obx(() => masterList.length == 0
+                child: Obx(() => customerList.length == 0
                     ? buildSmartRefresher(buildEmptyContainer())
                     : buildSmartRefresher(ListView.builder(
                         itemBuilder: (context, i) {
-                          return buildMasterItem(context, masterList[i], i);
+                          return buildCustomerItem(context, customerList[i], i);
                         },
-                        itemCount: masterList.length,
+                        itemCount: customerList.length,
                       ))),
               ),
             ],
@@ -240,31 +240,15 @@ class _MasterPageState extends State<MasterPage>
         ));
   }
 
-  Widget buildMasterItem(BuildContext context, master, i) {
+  Widget buildCustomerItem(BuildContext context, customer, i) {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(18.0),
         child: Row(
           children: [
             Expanded(
               child: Row(
                 children: [
-                  Container(
-                    clipBehavior: Clip.hardEdge,
-                    margin: EdgeInsets.only(bottom: 10, right: 5),
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.grey[100]!),
-                      borderRadius: BorderRadius.all(Radius.circular(75)),
-                    ),
-                    child: CachedNetworkImage(
-                      imageUrl: master['Photo'],
-                      width: 50,
-                      height: 50,
-                      placeholder: (c, t) => Image.asset('assets/avator.png'),
-                      errorWidget: (c, t, x) =>
-                          Image.asset('assets/avator.png'),
-                    ),
-                  ),
                   Expanded(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -274,29 +258,10 @@ class _MasterPageState extends State<MasterPage>
                           children: [
                             Expanded(
                               child: Text(
-                                master['TrueName'] ?? '--',
+                                customer['TrueName'] ?? '--',
                                 style: TextStyle(
                                     fontWeight: FontWeight.bold, fontSize: 14),
                               ),
-                            ),
-                            Text(
-                              master['IsSign'] == 1 ? '已签约' : '未签约',
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: master['IsSign'] == 1
-                                      ? Colors.green
-                                      : Colors.red),
-                            ),
-                            SizedBox(
-                              width: 20,
-                            ),
-                            Text(
-                              master['StateName'] ?? '未认证',
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: master['State'] == 2
-                                      ? Colors.green
-                                      : Colors.red),
                             ),
                           ],
                         ),
@@ -307,11 +272,11 @@ class _MasterPageState extends State<MasterPage>
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Expanded(
-                              child: Text(
-                                '备注：${master['Remark'] ?? '--'}',
-                                style: TextStyle(fontSize: 14),
-                              ),
+                              child: Text('账号：${customer['UserId']}',
+                                  style: TextStyle(fontSize: 11)),
                             ),
+                            Text('手机号：${customer['Phone']}',
+                                style: TextStyle(fontSize: 11)),
                           ],
                         ),
                         SizedBox(
@@ -320,64 +285,18 @@ class _MasterPageState extends State<MasterPage>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text('账号：${master['UserId']}',
+                            Text('未完成：${customer['NoFinfshNum']}',
                                 style: TextStyle(fontSize: 11)),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.location_on,
-                                  size: 10,
-                                  color: Colors.blue,
-                                ),
-                                Text('${master['Space'].toInt()}km',
-                                    style: TextStyle(
-                                        fontSize: 11, color: mainColor)),
-                              ],
-                            ),
-                            Row(
-                              children: [
-                                Text('星级：', style: TextStyle(fontSize: 11)),
-                                Padding(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 5),
-                                  child: RatingBar(
-                                    value: master['GreenStar'],
-                                    size: 15,
-                                    padding: 1,
-                                    nomalImage: 'assets/star_normal.png',
-                                    selectImage: 'assets/star.png',
-                                    selectAble: false,
-                                    maxRating: 5,
-                                    count: 5,
-                                    onRatingUpdate: (String value) {},
-                                  ),
-                                )
-                              ],
-                            ),
-                          ],
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text('未接单：${master['OrderUnTack']}',
+                            Text('审核中：${customer['CheckNum']}',
                                 style: TextStyle(fontSize: 11)),
-                            Text('未预约：${master['OrderUnApoint']}',
-                                style: TextStyle(fontSize: 11)),
-                            Text('待上门：${master['OrderUnCheck']}',
-                                style: TextStyle(fontSize: 11)),
-                            Text('服务中：${master['OrderService']}',
-                                style: TextStyle(fontSize: 11)),
-                            Text('已完成：${master['OrderFinish']}',
+                            Text('已完成：${customer['FinishNum']}',
                                 style: TextStyle(fontSize: 11)),
                           ],
                         ),
                         SizedBox(
                           height: 10,
                         ),
-                        Text('店铺地址：${master['FullAddress']}',
+                        Text('接单区域：${customer['Address'] ?? '--'}',
                             style: TextStyle(fontSize: 11)),
                       ],
                     ),
@@ -391,33 +310,10 @@ class _MasterPageState extends State<MasterPage>
             Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ///禁用师傅
-                GestureDetector(
-                  onTap: () {
-                    forbidMasterDialog(master);
-                  },
-                  child: Container(
-                    width: 30,
-                    height: 30,
-                    clipBehavior: Clip.hardEdge,
-                    margin: EdgeInsets.only(bottom: 10, right: 5),
-                    decoration: BoxDecoration(
-                      color: Colors.red,
-                      border: Border.all(color: Colors.grey[100]!),
-                      borderRadius: BorderRadius.all(Radius.circular(15)),
-                    ),
-                    child: Center(
-                        child: Text(
-                      '禁',
-                      style: TextStyle(color: Colors.white),
-                    )),
-                  ),
-                ),
-
                 ///拨打电话
                 GestureDetector(
                   onTap: () {
-                    FlutterPhoneDirectCaller.callNumber(master['Phone']);
+                    FlutterPhoneDirectCaller.callNumber(customer['Phone']);
                   },
                   child: Container(
                     width: 30,
@@ -438,10 +334,10 @@ class _MasterPageState extends State<MasterPage>
                   ),
                 ),
 
-                ///指派师傅
+                ///指派客服
                 GestureDetector(
                   onTap: () {
-                    assignMasterDialog(master);
+                    assignCustomerDialog(customer);
                   },
                   child: Container(
                     width: 30,
@@ -463,15 +359,15 @@ class _MasterPageState extends State<MasterPage>
     );
   }
 
-  ///指派师傅
-  void assignMasterDialog(master) {
+  ///指派客服
+  void assignCustomerDialog(customer) {
     showDialog<Null>(
       context: context,
       barrierDismissible: true,
       builder: (context) {
         return AlertDialog(
           title: Center(
-            child: Text('是否指派给师傅${master['TrueName']}？'),
+            child: Text('是否指派给客服${customer['TrueName']}？'),
           ),
           titleTextStyle: TextStyle(fontSize: 16, color: Colors.black),
           actions: <Widget>[
@@ -485,7 +381,7 @@ class _MasterPageState extends State<MasterPage>
               child: Text('确定'),
               onPressed: () {
                 Navigator.of(context).pop();
-                assignMaster(master);
+                assignCustomer(customer);
               },
             ),
           ],
@@ -494,70 +390,20 @@ class _MasterPageState extends State<MasterPage>
     );
   }
 
-  ///指派师傅
-  void assignMaster(master) {
-// LoginId: zhangsan
-// Ids: 7560
-// UserId: 45678912355
-// Space: 91.00
-    RequestUtil.post(Api.assignMaster, {
+  ///指派客服
+  void assignCustomer(customer) {
+// LoginId: Cyl
+// Token: mi9gAwC22huiOvmMMz5D+cmCb1xQSh+mIjFzZD3T9zKFMUiw8GPO/CQgS27gVQ/cOvDv4Gl4go2AMPt6gDd2pw==
+// OrderNumber: 230217045666
+// UserId: kefu1013
+    RequestUtil.post(Api.assignCustomer, {
       'LoginId': loginId.value,
-      'Ids': widget.orderId,
-      'UserId': master['UserId'],
-      'Space': master['Space']
+      'OrderNumber': widget.orderNumber,
+      'UserId': customer['UserId']
     }).then((value) {
       if (value['Success']) {
         showToast('指派成功');
         pop(context, true);
-      } else {
-        showToast(value['msg']);
-      }
-    });
-  }
-
-  ///禁用师傅
-  void forbidMasterDialog(master) {
-    showDialog<Null>(
-      context: context,
-      barrierDismissible: true,
-      builder: (context) {
-        return AlertDialog(
-          title: Center(
-            child: Text('是否禁用师傅${master['TrueName']}？'),
-          ),
-          titleTextStyle: TextStyle(fontSize: 16, color: Colors.black),
-          actions: <Widget>[
-            TextButton(
-              child: Text('取消'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            ),
-            TextButton(
-              child: Text('确定'),
-              onPressed: () {
-                Navigator.of(context).pop();
-                forbidMaster(master);
-              },
-            ),
-          ],
-        );
-      },
-    );
-  }
-
-  ///禁用师傅
-  void forbidMaster(master) {
-// LoginId: zhangsan
-// Ids: 7560
-// UserId: 45678912355
-// Space: 91.00
-    RequestUtil.post(
-            Api.forbidMaster, {'LoginId': loginId.value, 'Id': master['Id']})
-        .then((value) {
-      if (value['Success']) {
-        showToast('禁用成功');
-        fetchData();
       } else {
         showToast(value['msg']);
       }
@@ -606,7 +452,7 @@ class _MasterPageState extends State<MasterPage>
               height: 100,
             ),
             Text(
-              '暂无师傅',
+              '暂无客服',
               style: TextStyle(color: Colors.grey),
             ),
           ],
@@ -618,7 +464,7 @@ class _MasterPageState extends State<MasterPage>
   SmartRefresher buildSmartRefresher(Widget child) {
     return SmartRefresher(
       enablePullDown: true,
-      enablePullUp: masterList.length != 0,
+      enablePullUp: customerList.length != 0,
       controller: refreshController,
       onRefresh: onRefresh,
       onLoading: onLoading,

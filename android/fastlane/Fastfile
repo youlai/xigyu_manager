@@ -35,18 +35,18 @@ platform :android do
     gradle(task: "clean assembleRelease")
     upload_to_play_store
   end
-  lane :toPgy do
+  lane :toPgy do |options|
     puts("开始打包Android APK!");
     gradle(task: "clean assembleRelease")
     puts("------打包后App信息：------")
   
  
     #上传到蒲公英
-    pgyer(api_key: "982c1db15da6f537091af87ea1a5b3d6", apk: "../build/app/outputs/apk/release/app-release.apk")
+    pgyer(api_key: "982c1db15da6f537091af87ea1a5b3d6", apk: "../build/app/outputs/apk/release/app-release.apk",update_description: options[:desc])
   end
-  lane :uploadToPgy do
+  lane :uploadToPgy do |options|
     puts("开始上传蒲公英!");
     #上传到蒲公英
-    pgyer(api_key: "982c1db15da6f537091af87ea1a5b3d6", apk: "../build/app/outputs/apk/release/app-release.apk")
+    pgyer(api_key: "982c1db15da6f537091af87ea1a5b3d6", apk: "../build/app/outputs/apk/release/app-release.apk",update_description: options[:desc])
   end
 end

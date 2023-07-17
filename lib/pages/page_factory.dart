@@ -114,7 +114,7 @@ class _FactoryManageState extends State<FactoryManage> {
                 Expanded(
                   child: TextField(
                     controller: _queryTextController,
-                    focusNode: _focusNode,
+                    // focusNode: _focusNode,
                     textInputAction: TextInputAction.search,
                     keyboardType: TextInputType.text,
                     onEditingComplete: () {

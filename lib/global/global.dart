@@ -1,3 +1,4 @@
+
 /*
  * @Author: youlai 761364115@qq.com
  * @Date: 2023-04-03 10:24:38
@@ -47,6 +48,7 @@ Color mainColor = Colors.blue;
 ///工单数量
 RxList orderNum = [
   {'key': 'All', 'name': '全部', 'count': 0, 'state': -1}.obs,
+  {'key': 'WaipPintNum', 'name': '未分配', 'count': 0, 'state': 0}.obs,
   {'key': 'UnAssignNum', 'name': '未指派', 'count': 0, 'state': 1}.obs,
   {'key': 'UnTackNum', 'name': '未接单', 'count': 0, 'state': 2}.obs,
   {'key': 'AppoinNum', 'name': '未预约', 'count': 0, 'state': 3}.obs,

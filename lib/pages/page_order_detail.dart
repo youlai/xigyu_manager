@@ -13,6 +13,7 @@ import 'package:permission_handler/permission_handler.dart';
 import "package:collection/collection.dart";
 import 'package:xigyu_manager/api/api.dart';
 import 'package:xigyu_manager/global/global.dart';
+import 'package:xigyu_manager/pages/page_customer.dart';
 import 'package:xigyu_manager/pages/page_master.dart';
 import 'package:xigyu_manager/pages/page_order_record.dart';
 import 'package:xigyu_manager/utils/screen_utils.dart';
@@ -586,6 +587,32 @@ class _OrderDetailBState extends State<OrderDetailB> {
                             spacing: 5,
                             runSpacing: 5,
                             children: [
+                              ///指派客服
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  foregroundColor:
+                                      MaterialStateProperty.all(Colors.white),
+                                  overlayColor: MaterialStateProperty.all(
+                                      Color(0xff888888)),
+                                  backgroundColor:
+                                      MaterialStateProperty.all(mainColor),
+                                  padding:
+                                      MaterialStateProperty.all(btnEdgeInsets),
+                                ),
+                                onPressed: () async {
+                                  var result = await pushTo(
+                                      context,
+                                      CustomerPage(
+                                        orderId: order['Model']['Id'],
+                                        orderNumber: widget.orderNumber,
+                                      ));
+                                  if (result != null) {
+                                    pop(context,true);
+                                  }
+                                },
+                                child: Text('指派客服',
+                                    style: TextStyle(fontSize: 16)),
+                              ),
                               ///指派师傅
                               ElevatedButton(
                                 style: ButtonStyle(

@@ -85,6 +85,12 @@ class Api {
   ///禁用师傅
   static String forbidMaster = "MasterAccount/Disable";
 
+  ///同区域客服 isArea 0同区域 1跨区域
+  static String getOrderAreaList = "ServiceAccount/GetOrderAreaList";
+
+  ///指派客服
+  static String assignCustomer = "Order/AssignCustomer";
+
   ///获取充值列表
   static String getRechargeList = "Recharge/GetPageList";
 
