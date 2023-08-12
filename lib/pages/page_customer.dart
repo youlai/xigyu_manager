@@ -19,12 +19,13 @@ import 'package:xigyu_manager/widgets/rating_bar.dart';
 import '../../utils/request_util.dart';
 import "package:collection/collection.dart";
 
-///指派客服页面
+///type 0指派客服页面 1转派
 
 class CustomerPage extends StatefulWidget {
+  var type;
   var orderId;
   var orderNumber;
-  CustomerPage({this.orderId, this.orderNumber});
+  CustomerPage({this.type, this.orderId, this.orderNumber});
   @override
   _CustomerPageState createState() => _CustomerPageState();
 }
@@ -367,7 +368,8 @@ class _CustomerPageState extends State<CustomerPage>
       builder: (context) {
         return AlertDialog(
           title: Center(
-            child: Text('是否指派给客服${customer['TrueName']}？'),
+            child: Text(
+                '是否${widget.type == 0 ? '指' : '转'}派给客服${customer['TrueName']}？'),
           ),
           titleTextStyle: TextStyle(fontSize: 16, color: Colors.black),
           actions: <Widget>[
@@ -396,13 +398,14 @@ class _CustomerPageState extends State<CustomerPage>
 // Token: mi9gAwC22huiOvmMMz5D+cmCb1xQSh+mIjFzZD3T9zKFMUiw8GPO/CQgS27gVQ/cOvDv4Gl4go2AMPt6gDd2pw==
 // OrderNumber: 230217045666
 // UserId: kefu1013
-    RequestUtil.post(Api.assignCustomer, {
+    RequestUtil.post(
+        widget.type == 0 ? Api.assignCustomer : Api.transferCustomer, {
       'LoginId': loginId.value,
       'OrderNumber': widget.orderNumber,
       'UserId': customer['UserId']
     }).then((value) {
       if (value['Success']) {
-        showToast('指派成功');
+        showToast(widget.type == 0 ? '指派成功' : '转派成功');
         pop(context, true);
       } else {
         showToast(value['msg']);

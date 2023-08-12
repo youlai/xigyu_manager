@@ -22,6 +22,12 @@ class Api {
   ///登录
   static String login = "Account/Login";
 
+  ///获取企业微信登录openId
+  static String workWxLogin = "Account/WxAppOpenId";
+
+  ///企业微信登录
+  static String wxLogin = "Account/WxLogin";
+
   ///获取账号角色
   static String getUserRoler = "Roler/GetUserRoler";
 
@@ -91,6 +97,9 @@ class Api {
   ///指派客服
   static String assignCustomer = "Order/AssignCustomer";
 
+  ///转派客服
+  static String transferCustomer = "Order/TransferCustomer";
+
   ///获取充值列表
   static String getRechargeList = "Recharge/GetPageList";
 
@@ -114,4 +123,10 @@ class Api {
 
   ///用户联系量
   static String getContactUseNum = "Order/GetContactUseNum";
+
+  ///添加留言
+  static String leaveMsg = "Master/OrderRecord/Add";
+
+  ///上传图片
+  static String uploadImg = "UpLoad/Images";
 }

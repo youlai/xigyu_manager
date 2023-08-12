@@ -5,6 +5,8 @@ import 'dart:async';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_wxwork/flutter_wxwork.dart';
 import 'package:xigyu_manager/api/api.dart';
 import 'package:xigyu_manager/global/global.dart';
 import 'package:xigyu_manager/main.dart';
@@ -41,7 +43,7 @@ class LoginState extends State<Login> {
     '自定义地址',
   ];
   late String host;
-
+  final _flutterWxworkPlugin = FlutterWxwork();
   @override
   void initState() {
     super.initState();
@@ -68,46 +70,51 @@ class LoginState extends State<Login> {
                 style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
             ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
-              child: TextField(
-                controller: userNameCon,
-                // keyboardType: TextInputType.phone,
-                decoration: InputDecoration(
-                  labelText: '请输入账号',
-                ),
-                onChanged: (value) {
-                  this.setState(() {
-                    username = value;
-                  });
-                },
-              ),
-            ),
-            Container(
-              margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
-              child: TextField(
-                controller: pwdCon,
-                decoration: InputDecoration(
-                  labelText: '请输入密码',
-                  suffixIcon: GestureDetector(
-                    child: Icon(Icons.remove_red_eye, color: Colors.black26),
-                    onTap: () {
-                      setState(() {
-                        showPassword = !showPassword;
-                      });
-                    },
-                  ),
-                ),
-                obscureText: !showPassword,
-                onChanged: (value) {
-                  this.setState(() {
-                    password = value;
-                  });
-                },
-              ),
+            // Container(
+            //   margin: EdgeInsets.fromLTRB(0, 30, 0, 10),
+            //   child: TextField(
+            //     controller: userNameCon,
+            //     // keyboardType: TextInputType.phone,
+            //     decoration: InputDecoration(
+            //       labelText: '请输入账号',
+            //     ),
+            //     onChanged: (value) {
+            //       this.setState(() {
+            //         username = value;
+            //       });
+            //     },
+            //   ),
+            // ),
+            // Container(
+            //   margin: EdgeInsets.fromLTRB(0, 10, 0, 10),
+            //   child: TextField(
+            //     controller: pwdCon,
+            //     decoration: InputDecoration(
+            //       labelText: '请输入密码',
+            //       suffixIcon: GestureDetector(
+            //         child: Icon(Icons.remove_red_eye, color: Colors.black26),
+            //         onTap: () {
+            //           setState(() {
+            //             showPassword = !showPassword;
+            //           });
+            //         },
+            //       ),
+            //     ),
+            //     obscureText: !showPassword,
+            //     onChanged: (value) {
+            //       this.setState(() {
+            //         password = value;
+            //       });
+            //     },
+            //   ),
+            // ),
+            Image.asset(
+              'assets/avator.png',
+              width: 80,
+              height: 80,
             ),
             SizedBox(
-              height: 5,
+              height: 45,
             ),
             // Row(
             //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -142,7 +149,7 @@ class LoginState extends State<Login> {
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Text(
-                  '登录',
+                  '企业微信登录',
                   style: TextStyle(
                     color: Colors.white,
                     fontSize: 18,
@@ -150,10 +157,13 @@ class LoginState extends State<Login> {
                     letterSpacing: 2,
                   ),
                 ),
-                onPressed:
-                    (!isNullOrEmpty(username) && !isNullOrEmpty(password))
-                        ? _handleLogin
-                        : null,
+                onPressed: () {
+                  wxworkLogin();
+                },
+                // onPressed:
+                //     (!isNullOrEmpty(username) && !isNullOrEmpty(password))
+                //         ? _handleLogin
+                //         : null,
               ),
             ),
           ],
@@ -232,7 +242,7 @@ class LoginState extends State<Login> {
                     Dio dio = RequestUtil.getInstance();
                     dio.options.baseUrl = host;
                     Navigator.of(context).pop();
-                    getIp();
+                    // getIp();
                   }
                 },
               ),
@@ -259,12 +269,12 @@ class LoginState extends State<Login> {
       dio.options.baseUrl = Api.baseUrl;
 //      dio.options.baseUrl = 'http://192.168.0.203:8810/api/';
 //      dio.options.baseUrl = 'http://192.168.0.39:8810/api/'; //小艺
-      getIp();
+      // getIp();
     }
   }
 
   ///获取IP
-  void getIp() {
+  void getIp(openId) {
     RequestUtil.get(
             'https://qifu-api.baidubce.com/ip/local/geo/v1/district', {},
             baseUrl: false)
@@ -272,8 +282,9 @@ class LoginState extends State<Login> {
       if (value['code'] == 'Success') {
         var result = value['data'];
         var params = {
-          'UserId': username,
-          'Password': password,
+          // 'UserId': username,
+          // 'Password': password,
+          'OpenId': openId,
           'Ip': value['ip'],
           'ProvinceName': result['prov'],
           'CityName': result['city'],
@@ -291,14 +302,16 @@ class LoginState extends State<Login> {
 
   void login(params) {
     RequestUtil.showLoadingDialog(context);
-    RequestUtil.post(Api.login, params).then((value) {
+    RequestUtil.post(Api.wxLogin, params).then((value) {
       RequestUtil.hiddenLoadingDialog(context);
       if (value['Success']) {
         showToast("登陆成功");
         token.value = value['rows']['Token'];
+        serviceId.value = value['rows']['Model']['Id'];
         account.value = value['rows']['Model'];
         loginId.value = value['rows']['Model']['UserId'];
         box.write('token', token.value);
+        box.write('serviceId', serviceId.value);
         box.write('loginId', loginId.value);
         box.write('account', account.value);
         getUserRoler();
@@ -317,9 +330,14 @@ class LoginState extends State<Login> {
         for (var element in roles) {
           if (element['Name'] == '超级管理员' || element['Name'] == '公司财务') {
             isAdmin.value = true;
-            box.write('isAdmin', isAdmin.value);
+            serviceId.value = -1;
+            box.write('serviceId', -1);
+          } else {
+            isAdmin.value = false;
+            box.write('serviceId', serviceId.value);
           }
         }
+        box.write('isAdmin', isAdmin.value);
         Navigator.pushReplacement(context,
             CupertinoPageRoute(builder: (BuildContext context) {
           return IndexPage();
@@ -328,5 +346,52 @@ class LoginState extends State<Login> {
         showToast(value['msg']);
       }
     });
+  }
+
+  ///企业微信登录
+  Future<void> wxworkLogin() async {
+    /// 初始化（发起授权之前需先进行初始化）
+    bool isInit = await _flutterWxworkPlugin.register(
+        scheme: 'wwauth7ed1603fe2424990000008',
+        corpId: 'ww7ed1603fe2424990',
+        agentId: '1000008');
+    if (!isInit) {
+      showToast('企业微信初始化失败');
+      return;
+    }
+
+    /// 判断是否安装企业微信
+    bool isInstall = await _flutterWxworkPlugin.isAppInstalled();
+    if (!isInstall) {
+      showToast('未安装企业微信');
+      return;
+    }
+
+    ///https://developer.work.weixin.qq.com/document/path/91194
+    /// 调起授权
+    /// errCode
+    ///ERR_OK = 0(用户同意)
+    ///ERR_FAIL = 1（授权失败）
+    ///ERR_CANCEL = -1（用户取消）
+    ///code
+    ///用户换取access_token的code，仅在ErrCode为0时有效
+    ///state
+    ///第三方程序发送时用来标识其请求的唯一性的标志，由第三方程序调用sendMessage时传入，由企业微信终端回传，state字符串长度不能超过1K
+    AuthModel result = await _flutterWxworkPlugin.auth();
+    // showToast(result.toString());
+    if (result.errCode == '0') {
+      // showToast('登录成功');
+      //复制
+      // Clipboard.setData(ClipboardData(text: result.code));
+      RequestUtil.post(Api.workWxLogin, {'Code': result.code}).then((value) {
+        if (value['Success']) {
+          getIp(value['rows']['OpenId']);
+        } else {
+          showToast(result.toString() + ' ' + value['msg']);
+        }
+      });
+    } else if (result.errCode == '1' || result.errCode == '-1') {
+      showToast('登录失败');
+    }
   }
 }

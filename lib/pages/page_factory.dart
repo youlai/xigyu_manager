@@ -59,11 +59,12 @@ class _FactoryManageState extends State<FactoryManage> {
       'NotIn': '0,1'
     }).then((value) {
       if (value['Success']) {
-        enumList.value=value['rows'];
+        enumList.value = value['rows'];
         enumList.insert(0, {'Value': 0, 'Name': '充值类型'});
       }
     });
   }
+
   ///获取工厂账号
   getFactoryAccount() {
     RequestUtil.post(Api.getFactoryAccount, {
@@ -223,14 +224,18 @@ class _FactoryManageState extends State<FactoryManage> {
                                                                           true,
                                                                       isDense:
                                                                           true,
-                                                                      items: enumList.map((element) => DropdownMenuItem(
-                                                                            child:
-                                                                                Text(element['Name']),
-                                                                            value: element['Value'])).toList(),
+                                                                      items: enumList
+                                                                          .map((element) => DropdownMenuItem(
+                                                                              child: Text(element[
+                                                                                  'Name']),
+                                                                              value: element[
+                                                                                  'Value']))
+                                                                          .toList(),
                                                                       onChanged:
                                                                           (value) {
                                                                         type.value =
-                                                                            value as int;
+                                                                            value
+                                                                                as int;
                                                                       }))),
                                                         ],
                                                       ),
@@ -265,8 +270,7 @@ class _FactoryManageState extends State<FactoryManage> {
                                                         child: Text('取消')),
                                                     TextButton(
                                                         onPressed: () {
-                                                          if (type.value ==
-                                                              0) {
+                                                          if (type.value == 0) {
                                                             showToast(
                                                                 '请选择充值类型');
                                                             return;
@@ -299,12 +303,12 @@ class _FactoryManageState extends State<FactoryManage> {
                                                             'Num': money
                                                           }).then((value) {
                                                             RequestUtil
-                                                                  .hiddenLoadingDialog(
-                                                                      context);
+                                                                .hiddenLoadingDialog(
+                                                                    context);
                                                             if (value[
                                                                 'Success']) {
                                                               showToast('充值成功');
-                                                              page=1;
+                                                              page = 1;
                                                               getFactoryAccount();
                                                               pop(context);
                                                             } else {

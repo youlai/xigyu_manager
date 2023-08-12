@@ -3,8 +3,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_html/flutter_html.dart';
+import 'package:interactiveviewer_gallery/hero_dialog_route.dart';
+import 'package:interactiveviewer_gallery/interactiveviewer_gallery.dart';
 import 'package:xigyu_manager/global/global.dart';
 import 'package:xigyu_manager/utils/utils.dart';
+import 'package:xigyu_manager/widgets/gallery.dart';
 
 class OrderRecordPage extends StatefulWidget {
   List recordList;
@@ -153,15 +156,7 @@ class OrderRecordPageState extends State<OrderRecordPage> {
                             (index) => SizedBox(
                                 width: 40,
                                 height: 40,
-                                child: CachedNetworkImage(
-                                  imageUrl: urlList[index],
-                                  width: 50,
-                                  height: 50,
-                                  placeholder: (c, t) =>
-                                      Image.asset('assets/avator.png'),
-                                  errorWidget: (c, t, x) =>
-                                      Image.asset('assets/avator.png'),
-                                ))),
+                                child: buildItem(context, index, urlList))),
                       ),
                       SizedBox(
                         height: 5,

@@ -313,7 +313,9 @@ class _SearchOrderPageState extends State<SearchOrderPage>
       behavior: HitTestBehavior.opaque,
       onTap: () async {
         var result = await pushTo(context, OrderDetailB(order['OrderNumber']));
-        if (result != null) {}
+        if (result != null) {
+          fetchData();
+        }
       },
       child: Stack(
         children: [

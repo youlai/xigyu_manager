@@ -94,201 +94,197 @@ class _FactoryOrderNumState extends State<FactoryOrderNum> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(() => accountList.isEmpty
-        ? Center(child: Text('暂无数据'))
-        : SmartRefresher(
-            controller: refreshController,
-            enablePullUp: false,
-            onRefresh: () {
-              getFactoryOrderNum();
-            },
-            child: Column(
+    return SmartRefresher(
+      controller: refreshController,
+      enablePullUp: false,
+      onRefresh: () {
+        getFactoryOrderNum();
+      },
+      child: Column(
+        children: [
+          Container(
+            margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
+            child: Row(
               children: [
-                Container(
-                  margin: EdgeInsets.fromLTRB(10, 10, 10, 0),
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          margin: EdgeInsets.only(right: 5),
-                          decoration: BoxDecoration(
-                              color: Colors.white,
-                              border: Border.all(
-                                  color: Colors.grey[400]!, width: 0.5),
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(5))),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  onTap: () {
-                                    selectTime.value = 0;
-                                    getToday();
-                                  },
-                                  child: Obx(() => Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 10),
-                                      decoration: BoxDecoration(
-                                          color: selectTime.value == 0
-                                              ? Colors.blue
-                                              : Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                              topLeft: Radius.circular(5),
-                                              bottomLeft: Radius.circular(5))),
-                                      child: Text(
-                                        '今日',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: selectTime.value == 0
-                                                ? Colors.white
-                                                : Colors.black),
-                                      ))),
-                                ),
-                              ),
-                              Expanded(
-                                child: GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  onTap: () {
-                                    selectTime.value = 1;
-                                    getYesterday();
-                                  },
-                                  child: Obx(() => Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 10),
-                                      decoration: BoxDecoration(
-                                          color: selectTime.value == 1
-                                              ? Colors.blue
-                                              : Colors.white,
-                                          border: Border.symmetric(
-                                              vertical: BorderSide(
-                                                  color: Colors.grey[400]!,
-                                                  width: 0.5))),
-                                      child: Text(
-                                        '昨日',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: selectTime.value == 1
-                                                ? Colors.white
-                                                : Colors.black),
-                                      ))),
-                                ),
-                              ),
-                              Expanded(
-                                child: GestureDetector(
-                                  behavior: HitTestBehavior.opaque,
-                                  onTap: () {
-                                    selectTime.value = 2;
-                                    getThisMonth();
-                                  },
-                                  child: Obx(() => Container(
-                                      padding: EdgeInsets.symmetric(
-                                          horizontal: 10, vertical: 10),
-                                      decoration: BoxDecoration(
-                                          color: selectTime.value == 2
-                                              ? Colors.blue
-                                              : Colors.white,
-                                          borderRadius: BorderRadius.only(
-                                              topRight: Radius.circular(5),
-                                              bottomRight: Radius.circular(5))),
-                                      child: Text(
-                                        '本月',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                            color: selectTime.value == 2
-                                                ? Colors.white
-                                                : Colors.black),
-                                      ))),
-                                ),
-                              ),
-                            ],
+                Expanded(
+                  child: Container(
+                    margin: EdgeInsets.only(right: 5),
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        border:
+                            Border.all(color: Colors.grey[400]!, width: 0.5),
+                        borderRadius: BorderRadius.all(Radius.circular(5))),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Expanded(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              selectTime.value = 0;
+                              getToday();
+                            },
+                            child: Obx(() => Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                    color: selectTime.value == 0
+                                        ? Colors.blue
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(5),
+                                        bottomLeft: Radius.circular(5))),
+                                child: Text(
+                                  '今日',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: selectTime.value == 0
+                                          ? Colors.white
+                                          : Colors.black),
+                                ))),
                           ),
                         ),
-                      ),
-                      Expanded(
-                        child: GestureDetector(
-                          behavior: HitTestBehavior.opaque,
-                          onTap: () async {
-                            DateTimeRange? timeRange =
-                                await showDateRangePicker(
-                                    context: context,
-                                    firstDate: DateTime(2017, 9, 7, 17, 30),
-                                    lastDate: DateTime.now());
-                            if (timeRange == null) return;
-                            selectTime.value = -1;
-                            debugPrint(timeRange.toString());
-                            addStartTime.value = DateFormat('yyyy-MM-dd')
-                                .format(timeRange.start);
-                            addEndTime.value =
-                                DateFormat('yyyy-MM-dd').format(timeRange.end);
-                            dateTimeRange.value =
-                                '${addStartTime.value}~${addEndTime.value}';
-                            getFactoryOrderNum();
-                          },
-                          child: Container(
-                            margin: EdgeInsets.only(left: 5),
-                            // width: 210,
-                            height: 40,
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                border: Border.all(
-                                    color: Colors.grey[400]!, width: 0.5),
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Padding(
-                                  padding: const EdgeInsets.all(8.0),
-                                  child: Icon(
-                                    Icons.edit_calendar,
-                                    size: 15,
-                                    color: Colors.grey,
-                                  ),
-                                ),
-                                Expanded(
-                                  child: Obx(() => Text(dateTimeRange.value,
-                                      overflow: TextOverflow.ellipsis,
-                                      style: TextStyle(fontSize: 12))),
-                                ),
-                                // Padding(
-                                //   padding: const EdgeInsets.all(8.0),
-                                //   child: Icon(
-                                //     Icons.keyboard_arrow_down,
-                                //     size: 15,
-                                //     color: Colors.grey,
-                                //   ),
-                                // )
-                              ],
-                            ),
+                        Expanded(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              selectTime.value = 1;
+                              getYesterday();
+                            },
+                            child: Obx(() => Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                    color: selectTime.value == 1
+                                        ? Colors.blue
+                                        : Colors.white,
+                                    border: Border.symmetric(
+                                        vertical: BorderSide(
+                                            color: Colors.grey[400]!,
+                                            width: 0.5))),
+                                child: Text(
+                                  '昨日',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: selectTime.value == 1
+                                          ? Colors.white
+                                          : Colors.black),
+                                ))),
                           ),
                         ),
-                      ),
-                    ],
+                        Expanded(
+                          child: GestureDetector(
+                            behavior: HitTestBehavior.opaque,
+                            onTap: () {
+                              selectTime.value = 2;
+                              getThisMonth();
+                            },
+                            child: Obx(() => Container(
+                                padding: EdgeInsets.symmetric(
+                                    horizontal: 10, vertical: 10),
+                                decoration: BoxDecoration(
+                                    color: selectTime.value == 2
+                                        ? Colors.blue
+                                        : Colors.white,
+                                    borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(5),
+                                        bottomRight: Radius.circular(5))),
+                                child: Text(
+                                  '本月',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      color: selectTime.value == 2
+                                          ? Colors.white
+                                          : Colors.black),
+                                ))),
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
                 Expanded(
-                  child: Obx(() => ListView.builder(
-                      padding: EdgeInsets.zero,
-                      itemBuilder: ((context, index) => Card(
-                          margin:
-                              EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                          child: Padding(
-                            padding: const EdgeInsets.all(10),
-                            child: Row(
-                              children: [
-                                Expanded(
-                                    child:
-                                        Text('${accountList[index]['Name']}')),
-                                Text('${accountList[index]['Num']}'),
-                              ],
+                  child: GestureDetector(
+                    behavior: HitTestBehavior.opaque,
+                    onTap: () async {
+                      DateTimeRange? timeRange = await showDateRangePicker(
+                          context: context,
+                          firstDate: DateTime(2017, 9, 7, 17, 30),
+                          lastDate: DateTime.now());
+                      if (timeRange == null) return;
+                      selectTime.value = -1;
+                      debugPrint(timeRange.toString());
+                      addStartTime.value =
+                          DateFormat('yyyy-MM-dd').format(timeRange.start);
+                      addEndTime.value =
+                          DateFormat('yyyy-MM-dd').format(timeRange.end);
+                      dateTimeRange.value =
+                          '${addStartTime.value}~${addEndTime.value}';
+                      getFactoryOrderNum();
+                    },
+                    child: Container(
+                      margin: EdgeInsets.only(left: 5),
+                      // width: 210,
+                      height: 40,
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          border:
+                              Border.all(color: Colors.grey[400]!, width: 0.5),
+                          borderRadius: BorderRadius.all(Radius.circular(5))),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.edit_calendar,
+                              size: 15,
+                              color: Colors.grey,
                             ),
-                          ))),
-                      itemCount: accountList.length)),
+                          ),
+                          Expanded(
+                            child: Obx(() => Text(dateTimeRange.value,
+                                overflow: TextOverflow.ellipsis,
+                                style: TextStyle(fontSize: 12))),
+                          ),
+                          // Padding(
+                          //   padding: const EdgeInsets.all(8.0),
+                          //   child: Icon(
+                          //     Icons.keyboard_arrow_down,
+                          //     size: 15,
+                          //     color: Colors.grey,
+                          //   ),
+                          // )
+                        ],
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
-          ));
+          ),
+          Expanded(
+            child: Obx(() => accountList.isEmpty
+                ? Center(child: Text('暂无数据'))
+                : ListView.builder(
+                    padding: EdgeInsets.zero,
+                    itemBuilder: ((context, index) => Card(
+                        margin:
+                            EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10),
+                          child: Row(
+                            children: [
+                              Expanded(
+                                  child: Text('${accountList[index]['Name']}')),
+                              Text('${accountList[index]['Num']}'),
+                            ],
+                          ),
+                        ))),
+                    itemCount: accountList.length)),
+          ),
+        ],
+      ),
+    );
   }
 }

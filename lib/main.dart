@@ -42,6 +42,7 @@ Future<void> main() async {
   await GetStorage.init();
   account.value = box.read('account') ?? {};
   token.value = box.read('token') ?? '';
+  serviceId.value = box.read('serviceId') ?? -1;
   loginId.value = box.read('loginId') ?? '';
   isAdmin.value = box.read('isAdmin') ?? false;
   runApp(MyApp());

@@ -109,7 +109,7 @@ class _HomePageState extends State<HomePage>
                               },
                               child: Obx(() => Container(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 5),
+                                      horizontal: 15, vertical: 8),
                                   decoration: BoxDecoration(
                                       color: selectType.value == 0
                                           ? Colors.blue[200]
@@ -118,7 +118,7 @@ class _HomePageState extends State<HomePage>
                                           BorderRadius.all(Radius.circular(5))),
                                   child: Text(
                                     '控制台',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(color: Colors.white,fontSize: 18),
                                   ))),
                             ),
                             Padding(
@@ -139,7 +139,7 @@ class _HomePageState extends State<HomePage>
                               },
                               child: Obx(() => Container(
                                   padding: EdgeInsets.symmetric(
-                                      horizontal: 5, vertical: 5),
+                                      horizontal: 15, vertical: 8),
                                   decoration: BoxDecoration(
                                       color: selectType.value == 1
                                           ? Colors.blue[200]
@@ -148,7 +148,7 @@ class _HomePageState extends State<HomePage>
                                           BorderRadius.all(Radius.circular(5))),
                                   child: Text(
                                     '工单面板',
-                                    style: TextStyle(color: Colors.white),
+                                    style: TextStyle(color: Colors.white,fontSize: 18),
                                   ))),
                             ),
                           ],

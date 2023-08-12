@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.1.0+1
+version: 1.1.1+1
 
 environment:
   # sdk: ">=2.16.2 <3.0.0"
@@ -60,6 +60,17 @@ dependencies:
   gzx_dropdown_menu : ^3.1.0
   fl_chart: ^0.55.2
   syncfusion_flutter_charts: ^18.4.9
+  #视频图片浏览支持拖拽返回，放大缩小
+  interactiveviewer_gallery: any
+  flutter_native_image: ^0.0.6
+  wechat_assets_picker: any
+  wechat_camera_picker: any
+  image_picker: ^0.7.4
+  image_save: ^4.0.1
+  flutter_wxwork: 
+    git:
+      url: https://gitee.com/youlaish/flutter_wxwork.git
+      ref: master
 
 dev_dependencies:
   flutter_test:

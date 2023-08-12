@@ -43,6 +43,41 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.1"
+  camera:
+    dependency: transitive
+    description:
+      name: camera
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.10.0+3"
+  camera_android:
+    dependency: transitive
+    description:
+      name: camera_android
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.10.2+3"
+  camera_avfoundation:
+    dependency: transitive
+    description:
+      name: camera_avfoundation
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.9.10+2"
+  camera_platform_interface:
+    dependency: transitive
+    description:
+      name: camera_platform_interface
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.3.4"
+  camera_web:
+    dependency: transitive
+    description:
+      name: camera_web
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.1+1"
   characters:
     dependency: transitive
     description:
@@ -99,6 +134,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "3.1.0"
+  cross_file:
+    dependency: transitive
+    description:
+      name: cross_file
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.3.3+2"
   crypto:
     dependency: transitive
     description:
@@ -141,6 +183,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.0.5"
+  extended_image:
+    dependency: transitive
+    description:
+      name: extended_image
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "6.1.0"
+  extended_image_library:
+    dependency: transitive
+    description:
+      name: extended_image_library
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.2.0"
   fake_async:
     dependency: transitive
     description:
@@ -223,6 +279,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.5.0"
+  flutter_native_image:
+    dependency: "direct main"
+    description:
+      name: flutter_native_image
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.0.6+1"
   flutter_phone_direct_caller:
     dependency: "direct main"
     description:
@@ -230,6 +293,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.1"
+  flutter_plugin_android_lifecycle:
+    dependency: transitive
+    description:
+      name: flutter_plugin_android_lifecycle
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.7"
   flutter_screenutil:
     dependency: "direct main"
     description:
@@ -254,6 +324,15 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_wxwork:
+    dependency: "direct main"
+    description:
+      path: "."
+      ref: master
+      resolved-ref: "8c28b4d64c1802b0180ceb404da6d9e548e3a4cd"
+      url: "https://gitee.com/youlaish/flutter_wxwork.git"
+    source: git
+    version: "0.0.2"
   fluttertoast:
     dependency: "direct main"
     description:
@@ -296,6 +375,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "0.13.5"
+  http_client_helper:
+    dependency: transitive
+    description:
+      name: http_client_helper
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.0.4"
   http_parser:
     dependency: transitive
     description:
@@ -303,6 +389,41 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.0.2"
+  image_picker:
+    dependency: "direct main"
+    description:
+      name: image_picker
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.7.5+4"
+  image_picker_for_web:
+    dependency: transitive
+    description:
+      name: image_picker_for_web
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.10"
+  image_picker_platform_interface:
+    dependency: transitive
+    description:
+      name: image_picker_platform_interface
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.6.2"
+  image_save:
+    dependency: "direct main"
+    description:
+      name: image_save
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "4.0.1"
+  interactiveviewer_gallery:
+    dependency: "direct main"
+    description:
+      name: interactiveviewer_gallery
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "0.6.0"
   intl:
     dependency: "direct main"
     description:
@@ -499,6 +620,13 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "4.4.0"
+  photo_manager:
+    dependency: transitive
+    description:
+      name: photo_manager
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.6.0"
   platform:
     dependency: transitive
     description:
@@ -648,6 +776,13 @@ packages:
     dependency: transitive
     description:
       name: stream_channel
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "2.1.0"
+  stream_transform:
+    dependency: transitive
+    description:
+      name: stream_transform
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.1.0"
@@ -875,6 +1010,20 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "2.7.5"
+  wechat_assets_picker:
+    dependency: "direct main"
+    description:
+      name: wechat_assets_picker
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "7.2.0"
+  wechat_camera_picker:
+    dependency: "direct main"
+    description:
+      name: wechat_camera_picker
+      url: "https://pub.flutter-io.cn"
+    source: hosted
+    version: "3.8.0"
   win32:
     dependency: transitive
     description:
